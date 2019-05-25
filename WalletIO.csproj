@@ -8,7 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\main.ts" />
+    <None Remove="ClientApp\components\_helpers\auth-header.js" />
+    <None Remove="ClientApp\main.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,10 +24,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\main.ts" />
+    <TypeScriptCompile Include="ClientApp\components\_helpers\auth-header.js" />
+    <TypeScriptCompile Include="ClientApp\main.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\components\login\" />
+    <Folder Include="ClientApp\components\register\" />
     <Folder Include="Dtos\" />
     <Folder Include="Entities\" />
     <Folder Include="Helpers\" />

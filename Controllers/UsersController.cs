@@ -20,7 +20,7 @@ namespace WalletIO.Controllers
 {
     [Authorize]
     //[Produces("application/json")]
-    [Route("api/users/[controller]")]
+    [Route("[controller]")]
     public class UsersController : Controller
     {
         private IUserService _userService;

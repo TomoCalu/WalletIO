@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 const bundleOutputDir = './wwwroot/dist';
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
@@ -10,14 +11,15 @@ module.exports = (env) => {
     return [{
         stats: { modules: false },
         context: __dirname,
-        resolve: { extensions: [ '.js', '.ts' ] },
-        entry: { 'main': './ClientApp/main.ts' },
+        resolve: { extensions: [ '.js', '.ts', '.vue' ] },
+        entry: { 'main': './ClientApp/main.js' },
         module: {
             rules: [
-                { test: /\.vue\.html$/, include: /ClientApp/, loader: 'vue-loader', options: { loaders: { js: 'awesome-typescript-loader?silent=true' } } },
+                { test: /\.vue$/, include: /ClientApp/, loader: 'vue-loader', options: { loaders: {} } },
                 { test: /\.ts$/, include: /ClientApp/, use: 'awesome-typescript-loader?silent=true' },
                 { test: /\.css$/, use: isDevBuild ? [ 'style-loader', 'css-loader' ] : ExtractTextPlugin.extract({ use: 'css-loader?minimize' }) },
-                { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
+                { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' },
+                { test: /\.js?$/, include: /ClientApp/, use: 'babel-loader'}
             ]
         },
         output: {
@@ -26,6 +28,9 @@ module.exports = (env) => {
             publicPath: 'dist/'
         },
         plugins: [
+            new HtmlWebpackPlugin({
+                template: './ClientApp/index.html'
+            }),
             new CheckerPlugin(),
             new webpack.DefinePlugin({
                 'process.env': {
@@ -46,6 +51,13 @@ module.exports = (env) => {
             // Plugins that apply in production builds only
             new webpack.optimize.UglifyJsPlugin(),
             new ExtractTextPlugin('site.css')
-        ])
+                ],
+            ),
+        externals: {
+            // global app config object
+            config: JSON.stringify({
+                apiUrl: 'http://localhost:64246'
+            })
+        }
     }];
 };
