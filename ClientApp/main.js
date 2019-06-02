@@ -10,8 +10,6 @@ Vue.use(VeeValidate);
 /*import { configureFakeBackend } from './components/_helpers';
 configureFakeBackend();*/
 
-
-
 new Vue({
     el: '#app-root',
     store,

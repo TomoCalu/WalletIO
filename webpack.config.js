@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 const bundleOutputDir = './wwwroot/dist';
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
@@ -28,9 +27,6 @@ module.exports = (env) => {
             publicPath: 'dist/'
         },
         plugins: [
-            new HtmlWebpackPlugin({
-                template: './ClientApp/index.html'
-            }),
             new CheckerPlugin(),
             new webpack.DefinePlugin({
                 'process.env': {
