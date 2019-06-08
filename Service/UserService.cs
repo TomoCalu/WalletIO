@@ -63,11 +63,16 @@ namespace WalletIO.Services
             if (_context.Users.Any(x => x.Username == user.Username))
                 throw new AppException("Username \"" + user.Username + "\" is already taken");
 
+            if (_context.Users.Any(x => x.Email == user.Email))
+                throw new AppException("Email \"" + user.Email + "\" is already taken");
+
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
+
+            user.CurrentTimestamp = DateTime.Now.ToString();
 
             _context.Users.Add(user);
             _context.SaveChanges();

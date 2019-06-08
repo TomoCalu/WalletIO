@@ -11,7 +11,7 @@ using WalletIO.Helpers;
 namespace WalletIO.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190525141922_InitialCreate")]
+    [Migration("20190608153526_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,10 @@ namespace WalletIO.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CurrentTimestamp");
+
+                    b.Property<string>("Email");
 
                     b.Property<string>("FirstName");
 

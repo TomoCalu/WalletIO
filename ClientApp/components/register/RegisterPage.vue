@@ -13,6 +13,11 @@
                 <div v-if="submitted && errors.has('lastName')" class="invalid-feedback">{{ errors.first('lastName') }}</div>
             </div>
             <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" v-model="user.email" v-validate="'required'" name="email" class="form-control" :class="{ 'is-invalid': submitted && errors.has('email') }" />
+                <div v-if="submitted && errors.has('email')" class="invalid-feedback">{{ errors.first('email') }}</div>
+            </div>
+            <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" v-model="user.username" v-validate="'required'" name="username" class="form-control" :class="{ 'is-invalid': submitted && errors.has('username') }" />
                 <div v-if="submitted && errors.has('username')" class="invalid-feedback">{{ errors.first('username') }}</div>
@@ -40,6 +45,7 @@ export default {
             user: {
                 firstName: '',
                 lastName: '',
+                email: '',
                 username: '',
                 password: ''
             },

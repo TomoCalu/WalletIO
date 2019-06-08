@@ -1,7 +1,7 @@
 <template>
     <div>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light" v-if="account.status.loggedIn == true">
-            <a class="navbar-brand" href="#">Navbar</a>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" v-if="account.status.loggedIn == true">
+            <a class="navbar-brand" href="#">WalletIO</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -12,21 +12,10 @@
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
+                    <router-link class="nav-link" to="/records">Records</router-link>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
+                    <router-link class="nav-link" to="/login">Log out</router-link>
                 </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
@@ -35,7 +24,7 @@
                 </form>
             </div>
         </nav>
-        <div class="jumbotron" style="height:100vh">
+        <div class="jumbotron">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6 offset-sm-3"> 
@@ -45,7 +34,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
 </template>
 
 <script>

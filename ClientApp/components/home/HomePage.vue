@@ -1,8 +1,8 @@
 <template>
     <div>
         <h1>Hi {{account.user.firstName}}!</h1>
-        <p>You're logged in with Vue + Vuex & JWT!!</p>
-        <h3>Users from secure api end point:</h3>
+        <p>Welcome to WalletIO!</p>
+        <h3>You can start by adding new records...</h3>
         <em v-if="users.loading">Loading users...</em>
         <span v-if="users.error" class="text-danger">ERROR: {{users.error}}</span>
         <ul v-if="users.items">
