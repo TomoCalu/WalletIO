@@ -32,7 +32,6 @@
     <Folder Include="ClientApp\components\login\" />
     <Folder Include="ClientApp\components\register\" />
     <Folder Include="Dtos\" />
-    <Folder Include="Entities\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
 
