@@ -2,11 +2,13 @@
 
 namespace WalletIO.Entities
 {
-    public class Category
+    public class Account
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual EntryType EntryType { get; set; }
+        public virtual User User { get; set; }
+        public byte[] BankApi { get; set; }
+        public string CreatedTimestamp { get; set; }
         public virtual ICollection<Entry> Entries { get; set; }
     }
 }

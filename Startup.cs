@@ -90,7 +90,10 @@ namespace WalletIO
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<DataContext>();
                 context.Database.Migrate();
+                DataSeeder dataSeeder = new DataSeeder(context);
+                dataSeeder.SeedDb();
             }
+
 
             app.UseCors(x => x
                 .AllowAnyOrigin()

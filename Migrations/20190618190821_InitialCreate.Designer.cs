@@ -11,7 +11,7 @@ using WalletIO.Helpers;
 namespace WalletIO.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190608164601_InitialCreate")]
+    [Migration("20190618190821_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,26 @@ namespace WalletIO.Migrations
                 .HasAnnotation("ProductVersion", "2.0.2-rtm-10011")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("WalletIO.Entities.Account", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<byte[]>("BankApi");
+
+                    b.Property<string>("CreatedTimestamp");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int?>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Accounts");
+                });
+
             modelBuilder.Entity("WalletIO.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -28,13 +48,37 @@ namespace WalletIO.Migrations
 
                     b.Property<int?>("EntryTypeId");
 
-                    b.Property<int>("Name");
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("EntryTypeId");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("WalletIO.Entities.Entry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("AccountId");
+
+                    b.Property<int?>("CategoryId");
+
+                    b.Property<string>("CreatedTimestamp");
+
+                    b.Property<string>("Description");
+
+                    b.Property<decimal>("MoneyAmount");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Entries");
                 });
 
             modelBuilder.Entity("WalletIO.Entities.EntryType", b =>
@@ -42,11 +86,11 @@ namespace WalletIO.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Name");
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
-                    b.ToTable("EntryType");
+                    b.ToTable("EntryTypes");
                 });
 
             modelBuilder.Entity("WalletIO.Entities.User", b =>
@@ -54,7 +98,7 @@ namespace WalletIO.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CurrentTimestamp");
+                    b.Property<string>("CreatedTimestamp");
 
                     b.Property<string>("Email");
 
@@ -73,11 +117,29 @@ namespace WalletIO.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("WalletIO.Entities.Account", b =>
+                {
+                    b.HasOne("WalletIO.Entities.User", "User")
+                        .WithMany("Accounts")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("WalletIO.Entities.Category", b =>
                 {
                     b.HasOne("WalletIO.Entities.EntryType", "EntryType")
-                        .WithMany("Category")
+                        .WithMany("Categories")
                         .HasForeignKey("EntryTypeId");
+                });
+
+            modelBuilder.Entity("WalletIO.Entities.Entry", b =>
+                {
+                    b.HasOne("WalletIO.Entities.Account", "Account")
+                        .WithMany("Entries")
+                        .HasForeignKey("AccountId");
+
+                    b.HasOne("WalletIO.Entities.Category", "Category")
+                        .WithMany("Entries")
+                        .HasForeignKey("CategoryId");
                 });
 #pragma warning restore 612, 618
         }

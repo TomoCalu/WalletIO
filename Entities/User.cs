@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace WalletIO.Entities
 {
@@ -12,6 +13,7 @@ namespace WalletIO.Entities
         public string Username { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public string CurrentTimestamp { get; set; }
+        public string CreatedTimestamp { get; set; }
+        public virtual ICollection<Account> Accounts { get; set; }
     }
 }

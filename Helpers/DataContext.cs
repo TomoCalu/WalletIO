@@ -8,7 +8,9 @@ namespace WalletIO.Helpers
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<EntryType> EntryType { get; set; }
-        public DbSet<Category> Category { get; set; }
+        public DbSet<EntryType> EntryTypes { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Entry> Entries { get; set; }
     }
 }

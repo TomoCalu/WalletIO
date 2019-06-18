@@ -72,7 +72,7 @@ namespace WalletIO.Services
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
-            user.CurrentTimestamp = DateTime.Now.ToString();
+            user.CreatedTimestamp = DateTime.Now.ToString();
 
             _context.Users.Add(user);
             _context.SaveChanges();
