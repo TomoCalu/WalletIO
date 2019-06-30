@@ -16,6 +16,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using WalletIO.Service;
+using Microsoft.AspNetCore.Identity;
 
 namespace WalletIO
 {
@@ -32,7 +34,9 @@ namespace WalletIO
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(
+                options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            ); 
             services.AddCors();
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WalletDatabase")));
             //services.AddDbContext<DataContext>(x => x.UseInMemoryDatabase("TestDb"));
@@ -81,6 +85,8 @@ namespace WalletIO
 
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IEntryService, EntryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -89,6 +95,7 @@ namespace WalletIO
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<DataContext>();
+                context.Database.EnsureCreated();
                 context.Database.Migrate();
                 DataSeeder dataSeeder = new DataSeeder(context);
                 dataSeeder.SeedDb();

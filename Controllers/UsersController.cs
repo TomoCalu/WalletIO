@@ -19,7 +19,7 @@ using Microsoft.Extensions.Options;
 namespace WalletIO.Controllers
 {
     [Authorize]
-    //[Produces("application/json")]
+    [Produces("application/json")]
     [Route("[controller]")]
     public class UsersController : Controller
     {

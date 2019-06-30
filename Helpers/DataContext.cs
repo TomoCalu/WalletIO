@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using WalletIO.Entities;
 
@@ -12,5 +13,6 @@ namespace WalletIO.Helpers
         public DbSet<Category> Categories { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Entry> Entries { get; set; }
+
     }
 }

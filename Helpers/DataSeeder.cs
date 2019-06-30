@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,6 @@ namespace WalletIO.Helpers
 
         public void SeedDb() {
             _context.Database.EnsureCreated();
-
             AddNewEntryType(new EntryType { Name = "Income",
                                             Categories = new List<Category>() { new Category { Name = "Paycheck"},
                                                                                 new Category { Name = "Gifts"}}

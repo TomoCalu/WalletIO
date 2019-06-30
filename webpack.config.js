@@ -11,7 +11,7 @@ module.exports = (env) => {
         stats: { modules: false },
         context: __dirname,
         resolve: { extensions: [ '.js', '.ts', '.vue' ] },
-        entry: { 'main': './ClientApp/main.js' },
+        entry: { 'main': './ClientApp/main.js' }, 
         module: {
             rules: [
                 { test: /\.vue$/, include: /ClientApp/, loader: 'vue-loader', options: { loaders: {} } },
