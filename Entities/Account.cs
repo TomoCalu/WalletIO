@@ -10,8 +10,7 @@ namespace WalletIO.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual User User { get; set; }
-        //public byte[] BankApi { get; set; }
+        public int UserId { get; set; }
         public decimal MoneyAmount { get; set; }
         public string CreatedTimestamp { get; set; }
         public virtual ICollection<Entry> Entries { get; set; }

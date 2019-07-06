@@ -10,7 +10,7 @@ namespace WalletIO.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual EntryType EntryType { get; set; }
+        public int EntryTypeId { get; set; }
         public virtual ICollection<Entry> Entries { get; set; }
     }
 }

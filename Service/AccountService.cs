@@ -29,7 +29,7 @@ namespace WalletIO.Service
 
         public IEnumerable<Account> GetByIdUser(int idUser)
         {
-            return _context.Accounts.Where(x => x.User.Id == idUser).ToList();
+            return _context.Accounts.Where(x => x.UserId == idUser).ToList();
         }
 
         public void AddNew(Account account)

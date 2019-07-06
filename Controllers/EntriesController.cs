@@ -46,5 +46,30 @@ namespace WalletIO.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
+
+        [HttpPut("{idEntry}")]
+        public IActionResult Update(int idEntry, [FromBody]Entry entry)
+        {
+            entry.Id = idEntry;
+
+            try
+            {
+                // save 
+                _entryService.Update(entry);
+                return Ok();
+            }
+            catch (AppException e)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
+        [HttpDelete("{idEntry}")]
+        public IActionResult Delete(int idEntry)
+        {
+            _entryService.Delete(idEntry);
+            return Ok();
+        }
     }
 }

@@ -14,6 +14,8 @@ namespace WalletIO.Service
     {
         IEnumerable<Entry> GetByIdAccount(int idAccount);
         void AddNew(Entry entry);
+        void Update(Entry entry);
+        void Delete(int idEntry);
     }
 
     public class EntryService : IEntryService
@@ -27,7 +29,7 @@ namespace WalletIO.Service
 
         public IEnumerable<Entry> GetByIdAccount(int idAccount)
         {
-            return _context.Entries.Where(x => x.Account.Id == idAccount).ToList();
+            return _context.Entries.Where(x => x.AccountId == idAccount).ToList();
         }
 
         public void AddNew(Entry entry)
@@ -36,6 +38,30 @@ namespace WalletIO.Service
 
             _context.Entries.Add(entry);
             _context.SaveChanges();
+        }
+
+        public void Update(Entry entry)
+        {
+            var newEntry = _context.Entries.Find(entry.Id);
+
+            if (newEntry == null)
+                throw new AppException("Entry not found");
+
+            newEntry.MoneyAmount = entry.MoneyAmount;
+            newEntry.Description = entry.Description;
+
+            _context.Entries.Update(newEntry);
+            _context.SaveChanges();
+        }
+
+        public void Delete(int idEntry)
+        {
+            var entry = _context.Entries.Find(idEntry);
+            if (entry != null)
+            {
+                _context.Entries.Remove(entry);
+                _context.SaveChanges();
+            }
         }
     }
 }
