@@ -18,7 +18,9 @@ module.exports = (env) => {
                 { test: /\.ts$/, include: /ClientApp/, use: 'awesome-typescript-loader?silent=true' },
                 { test: /\.css$/, use: isDevBuild ? [ 'style-loader', 'css-loader' ] : ExtractTextPlugin.extract({ use: 'css-loader?minimize' }) },
                 { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' },
-                { test: /\.js?$/, include: /ClientApp/, use: 'babel-loader'}
+                { test: /\.js?$/, include: /ClientApp/, use: 'babel-loader' },
+                { test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/, use: 'url-loader?limit=10000' },
+                { test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/, use: 'file-loader'}
             ]
         },
         output: {
