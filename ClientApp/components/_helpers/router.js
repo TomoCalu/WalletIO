@@ -12,14 +12,14 @@ Vue.use(VueRouter);
 export const router = new VueRouter({
     mode: 'history',
     routes: [
-        { path: '/', component: HomePage },
+        //{ path: '/', component: HomePage },
         { path: '/login', component: LoginPage },
         { path: '/register', component: RegisterPage },
         { path: '/dashboard', component: DashboardPage },
         { path: '/records', component: RecordsPage },
 
         // otherwise redirect to home
-        { path: '*', redirect: '/' }
+        { path: '*', redirect: '/dashboard' }
     ]
 });
 
