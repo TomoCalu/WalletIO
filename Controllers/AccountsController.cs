@@ -37,6 +37,8 @@ namespace WalletIO.Controllers
         {
             try
             {
+                if(_accountService.CountAccounts(account.UserId) >= 8)
+                    return BadRequest(new { message = "Maximum number of accounts reached" });
                 // save 
                 _accountService.AddNew(account);
                 return Ok();

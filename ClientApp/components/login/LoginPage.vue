@@ -12,7 +12,7 @@
                 <div class="col-lg-6">
                   <div class="p-5">
                     <div class="text-center">
-                      <h1 class="h4 text-gray-900 mb-4">Welcome to WalletIo!</h1>
+                      <h1 class="h4 text-gray-900 mb-4">Welcome to WalletIO!</h1>
                     </div>
                     <form class="user" @submit.prevent="handleSubmit">
                       <div class="form-group">

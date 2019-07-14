@@ -10,7 +10,7 @@ module.exports = (env) => {
     return [{
         stats: { modules: false },
         context: __dirname,
-        resolve: { extensions: [ '.js', '.ts', '.vue' ] },
+        resolve: { extensions: ['.js', '.ts', '.vue'] },
         entry: { 'main': './ClientApp/main.js' }, 
         module: {
             rules: [

@@ -1,17 +1,23 @@
 import Vue from 'vue';
 //import Vuetify from 'vuetify';
 import VeeValidate from 'vee-validate';
+import Paginate from 'vuejs-paginate'
+import babelPolyfill from 'babel-polyfill';
 
-/*Custom fonts for this template*/
-import './css/sb-admin-2.min.css'
+/*Fonts*/
 import './vendor/fontawesome-free/css/all.min.css'
-
-/*Custom styles for this template*/
 import './css/nonito-fonts.css'
 
+/* Styles*/
+import './css/sb-admin-2.min.css'
+import './vendor/datatables/dataTables.bootstrap4.min.css'
+
 /*Bootstrap core JavaScript-*/
-import './vendor/jquery/jquery.min.js'
+//import './vendor/jquery/jquery.min.js'
 import './vendor/bootstrap/js/bootstrap.bundle.min.js'
+//import './vendor/datatables/dataTables.bootstrap4.min.js'
+//import './vendor/datatables/jquery.dataTables.min.js'
+//import './vendor/datatables/dataTables.bootstrap4.min.js'
 
 /*Core plugin JavaScript*/
 //import './vendor/jquery-easing/jquery.easing.min.js'
@@ -32,6 +38,7 @@ import { store } from './components/_store';
 
 //Vue.use(Vuetify)
 Vue.use(VeeValidate);
+Vue.component('paginate', Paginate)
 
 /*import { configureFakeBackend } from './components/_helpers';
 configureFakeBackend();*/
