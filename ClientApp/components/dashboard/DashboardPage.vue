@@ -16,8 +16,8 @@
         <div class="card border-left-success shadow h-100 py-2" v-on:mouseover="showAccountOptions(index)" v-on:mouseleave="hideAccountOptions(index)">
           <div class="card-body">
             <div class="row no-gutters align-items-center d-flex justify-content-end" v-if="accountOptions[index]">
-              <i class="fas fa-pencil-alt" v-on:mouseover="this.style.cursor='pointer'"></i>
-              <i class="fas fa-trash-alt ml-2" style="cursor: pointer;"></i>
+              <i class="fas fa-pencil-alt hover-account-options" v-on:click="getCurrentAccount(index)" data-toggle="modal" data-target="#editAccountModal"></i>
+              <i class="fas fa-trash-alt ml-2 hover-account-options" v-on:click="idAccountToDelete = account.id" data-toggle="modal" data-target="#deleteAccountModal"></i>
             </div>
             <div class="row no-gutters align-items-center d-flex justify-content-end" v-else-if="!accountOptions[index]" style="max-height:16px;">
               &nbsp;
@@ -307,6 +307,7 @@
         </div>
       </div>
     </div>  
+
     <!-- Add new account modal-->
     <div class="modal fade" id="newAccountModal" tabindex="-1" role="dialog" aria-labelledby="newAccountModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -319,7 +320,7 @@
           </div>
           <div class="modal-body">         
             <div>
-              <form v-on:submit="handleSubmitNewAccount" class="newAccount">
+              <form v-on:submit="handleSubmitAccount" class="newAccount">
                 <Alert v-if="alert.message" :class="`alert ${alert.type}`" />
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
@@ -343,6 +344,62 @@
         </div>
       </div>
     </div>
+
+    <!-- Edit account modal-->
+    <div class="modal fade" id="editAccountModal" tabindex="-1" role="dialog" aria-labelledby="editAccountModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit account</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">         
+            <div>
+              <form v-on:submit="handleSubmitAccount" class="newAccount">
+                <Alert v-if="alert.message" :class="`alert ${alert.type}`" />
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <label for="name">Account Name</label>
+                    <input type="text" v-model="newAccount.name" v-validate="'required'" name="name" class="form-control" :class="{ 'is-invalid': submitted && errors.has('name') }" />
+                    <div v-if="submitted && errors.has('name')" class="invalid-feedback">{{ errors.first('name') }}</div>
+                  </div>
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <label for="moneyAmount">Starting money amount (KN)</label>
+                    <input type="number" v-model="newAccount.moneyAmount" v-validate="'required'" name="moneyAmount" class="form-control" :class="{ 'is-invalid': submitted && errors.has('moneyAmount') }" />
+                    <div v-if="submitted && errors.has('moneyAmount')" class="invalid-feedback">{{ errors.first('moneyAmount') }}</div>
+                  </div>
+                </div>                
+                <div class="modal-footer">
+                  <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                  <button class="btn btn-primary" type="submit">Accept</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete account Modal-->
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this account?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Select "Delete" below if you are ready to delete this account.</div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-danger" v-on:click="deleteAccount">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <!-- /.container-fluid -->
 </template>
@@ -362,7 +419,8 @@ export default {
         userId: ''
       },
       submitted: false,
-      accountOptions: []
+      accountOptions: [],
+      idAccountToDelete: ''
     };
   },
   computed: {
@@ -378,19 +436,33 @@ export default {
       });
       return finished;
     },
-    addNewAccount(){
+    addNewAccount() {
       this.newAccount.userId = this.account.user.id;
       var finished = accountService.addNew(this.newAccount);
       return finished;
     },
-    handleSubmitNewAccount(e) {
+    updateAccount() {
+      this.newAccount.userId = this.account.user.id;
+      accountService.update(this.newAccount);
+    },
+    deleteAccount() {
+      accountService.delete(this.idAccountToDelete);
+      window.location.reload()
+    },
+    handleSubmitAccount(e) {
       this.submitted = true;
       this.$validator.validate().then(async (valid) => {
         if (valid) {
           e.preventDefault();
-          await this.addNewAccount();
+          if(this.checkIfAccountExists() == true)
+          {
+            this.updateAccount();  
+          }
+          else {
+            await this.addNewAccount();            
+          }
           var that = this; 
-          
+            
           setTimeout(function(){
             if (String(that.$store.state.alert.type) == "alert-danger") {
               return;
@@ -409,6 +481,19 @@ export default {
     },
     hideAccountOptions(accountId) {
       this.$set(this.accountOptions, accountId, false)
+    },
+    getCurrentAccount(index){
+      this.newAccount = {...this.accounts[index]};
+    },
+    checkIfAccountExists() {
+      if(this.accounts.length == 0) return false;
+      for(var i=0; i < this.accounts.length; i++)
+      {
+        if(this.accounts[i].id == this.newAccount.id){
+          return true;
+        } 
+      }
+      return false;
     }
   },
   created: async function(){
@@ -422,6 +507,5 @@ export default {
   }
 };
 
-// probat stavit u watch kad se promini vrijednsot alerta da se preventa default il nesto tako
 </script>
 
