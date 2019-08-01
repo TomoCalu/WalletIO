@@ -12,9 +12,16 @@
     <!-- Content Row -->
     <div class="row">
       <!-- Earnings (Monthly) Card Example -->
-      <div class="col-xl-3 col-md-6 mb-4" v-for="account in accounts" v-bind:key="account.id">
-        <div class="card border-left-success shadow h-100 py-2">
+      <div class="col-xl-3 col-md-6 mb-4" v-for="(account, index) in accounts" v-bind:key="account.id">
+        <div class="card border-left-success shadow h-100 py-2" v-on:mouseover="showAccountOptions(index)" v-on:mouseleave="hideAccountOptions(index)">
           <div class="card-body">
+            <div class="row no-gutters align-items-center d-flex justify-content-end" v-if="accountOptions[index]">
+              <i class="fas fa-pencil-alt" v-on:mouseover="this.style.cursor='pointer'"></i>
+              <i class="fas fa-trash-alt ml-2" style="cursor: pointer;"></i>
+            </div>
+            <div class="row no-gutters align-items-center d-flex justify-content-end" v-else-if="!accountOptions[index]" style="max-height:16px;">
+              &nbsp;
+            </div>
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div
@@ -354,9 +361,10 @@ export default {
         moneyAmount:'',
         userId: ''
       },
-      submitted: false
+      submitted: false,
+      accountOptions: []
     };
-  },  
+  },
   computed: {
     ...mapState({
       alert: state => state.alert,
@@ -365,9 +373,10 @@ export default {
   },
   methods: {
     getAllAccountsForUser() {
-      accountService.getByIdUser(this.account.user.id).then(response => {            
+      var finished = accountService.getByIdUser(this.account.user.id).then(response => {            
         this.accounts = response;
       });
+      return finished;
     },
     addNewAccount(){
       this.newAccount.userId = this.account.user.id;
@@ -394,10 +403,19 @@ export default {
           return;
         } 
       });
+    },
+    showAccountOptions(accountId) {
+      this.$set(this.accountOptions, accountId, true)
+    },
+    hideAccountOptions(accountId) {
+      this.$set(this.accountOptions, accountId, false)
     }
   },
-  created: function(){
-    this.getAllAccountsForUser();
+  created: async function(){
+    await this.getAllAccountsForUser();
+    for (var i=0; i<this.accounts.length; i++) { 
+      this.accountOptions[i] = false;
+    }
   },
   components: {
     Alert
