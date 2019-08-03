@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WalletIO.Entities
 {
-    public class Entry
+    public class Record
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

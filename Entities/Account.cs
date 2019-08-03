@@ -13,6 +13,6 @@ namespace WalletIO.Entities
         public int UserId { get; set; }
         public decimal MoneyAmount { get; set; }
         public string CreatedTimestamp { get; set; }
-        public virtual ICollection<Entry> Entries { get; set; }
+        public virtual ICollection<Record> Records { get; set; }
     }
 }

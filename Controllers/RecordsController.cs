@@ -15,29 +15,32 @@ namespace WalletIO.Controllers
     [Authorize]
     [Produces("application/json")]
     [Route("[controller]")]
-    public class EntriesController : Controller
+    public class RecordsController : Controller
     {
-        private IEntryService _entryService;
+        private IRecordService _recordService;
+        private IAccountService _accountService;
 
-        public EntriesController(IEntryService entryService)
+        public RecordsController(IRecordService recordService, IAccountService accountService)
         {
-            _entryService = entryService;
+            _recordService = recordService;
+            _accountService = accountService;
         }
 
         [HttpGet("{idAccount}")]
         public IActionResult GetByIdAccount(int idAccount)
         {
-            var entries = _entryService.GetByIdAccount(idAccount);
+            var entries = _recordService.GetByIdAccount(idAccount);
             return Ok(entries);
         }
 
         [HttpPost("addNew")]
-        public IActionResult AddNew([FromBody]Entry entry)
+        public IActionResult AddNew([FromBody]Record record)
         {
             try
             {
                 // save 
-                _entryService.AddNew(entry);
+                _recordService.AddNew(record);
+                _accountService.DecreaseAccountMoneyAmount(record.AccountId, record.MoneyAmount);
                 return Ok();
             }
             catch (AppException e)
@@ -48,14 +51,14 @@ namespace WalletIO.Controllers
         }
 
         [HttpPut("{idEntry}")]
-        public IActionResult Update(int idEntry, [FromBody]Entry entry)
+        public IActionResult Update(int idEntry, [FromBody]Record record)
         {
-            entry.Id = idEntry;
+            record.Id = idEntry;
 
             try
             {
                 // save 
-                _entryService.Update(entry);
+                _recordService.Update(record);
                 return Ok();
             }
             catch (AppException e)
@@ -65,10 +68,10 @@ namespace WalletIO.Controllers
             }
         }
 
-        [HttpDelete("{idEntry}")]
-        public IActionResult Delete(int idEntry)
+        [HttpDelete("{idRecord}")]
+        public IActionResult Delete(int idRecord)
         {
-            _entryService.Delete(idEntry);
+            _recordService.Delete(idRecord);
             return Ok();
         }
     }

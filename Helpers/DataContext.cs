@@ -12,7 +12,7 @@ namespace WalletIO.Helpers
         public DbSet<EntryType> EntryTypes { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Account> Accounts { get; set; }
-        public DbSet<Entry> Entries { get; set; }
+        public DbSet<Record> Records { get; set; }
 
     }
 }

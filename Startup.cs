@@ -86,7 +86,8 @@ namespace WalletIO
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IEntryService, EntryService>();
+            services.AddScoped<IRecordService, RecordService>();
+            services.AddScoped<IEntryTypeService, EntryTypeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

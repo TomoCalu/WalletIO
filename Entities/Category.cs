@@ -11,6 +11,6 @@ namespace WalletIO.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public int EntryTypeId { get; set; }
-        public virtual ICollection<Entry> Entries { get; set; }
+        public virtual ICollection<Record> Records { get; set; }
     }
 }

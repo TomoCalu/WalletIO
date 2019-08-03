@@ -17,6 +17,7 @@ namespace WalletIO.Service
         void Update(Account account);
         void Delete(int idAccount);
         int CountAccounts(int idUser);
+        void DecreaseAccountMoneyAmount(int idAccount, decimal moneyAmount);
     }
 
     public class AccountService : IAccountService
@@ -67,6 +68,15 @@ namespace WalletIO.Service
         public int CountAccounts(int idUser) {
             int numberOfAccounts = _context.Accounts.Where(x => x.UserId == idUser).ToList().Count();
             return numberOfAccounts;
+        }
+
+        public void DecreaseAccountMoneyAmount(int idAccount, decimal moneyAmount)
+        {
+            var selectedAccount = _context.Accounts.Find(idAccount);
+            selectedAccount.MoneyAmount = selectedAccount.MoneyAmount - moneyAmount;
+
+            _context.Accounts.Update(selectedAccount);
+            _context.SaveChanges();
         }
     }
 }
