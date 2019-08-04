@@ -13,6 +13,7 @@ namespace WalletIO.Service
 {
     public interface IEntryTypeService
     {
+        EntryType GetById(int idEntryType);
         IEnumerable<EntryType> GetWithCategories ();
         bool CheckIfIncome(int idEntryType);
     }
@@ -26,7 +27,13 @@ namespace WalletIO.Service
             _context = context;
         }
 
+        public EntryType GetById(int idEntryType)
+        {
+            return _context.EntryTypes.Find(idEntryType);
+        }
+
         public IEnumerable<EntryType> GetWithCategories (){
+
             return _context.EntryTypes.Include(x => x.Categories);
         }
 

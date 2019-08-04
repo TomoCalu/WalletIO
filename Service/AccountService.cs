@@ -12,6 +12,7 @@ namespace WalletIO.Service
 {
     public interface IAccountService
     {
+        Account GetById(int idAccount);
         IEnumerable<Account> GetByIdUser(int idUser);
         void AddNew(Account account);
         void Update(Account account);
@@ -27,6 +28,11 @@ namespace WalletIO.Service
         public AccountService(DataContext context)
         {
             _context = context;
+        }
+
+        public Account GetById(int idAccount)
+        {
+            return _context.Accounts.Find(idAccount);
         }
 
         public IEnumerable<Account> GetByIdUser(int idUser)

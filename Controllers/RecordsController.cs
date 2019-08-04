@@ -30,11 +30,17 @@ namespace WalletIO.Controllers
             _categoryService = categoryService;
         }
 
-        [HttpGet("{idAccount}")]
-        public IActionResult GetByIdAccount(int idAccount)
+        [HttpGet("{idUser}")]
+        public IActionResult GetByIdUserWithAccountEntryAndCategory(int idUser)
         {
-            var entries = _recordService.GetByIdAccount(idAccount);
-            return Ok(entries);
+            var records = _recordService.GetByIdAccount(idUser);
+            foreach(var record in records)
+            {
+                record.Category = _categoryService.GetById(record.CategoryId);
+                record.EntryType = _entryTypeService.GetById(record.Category.EntryTypeId);
+                record.Account = _accountService.GetById(record.AccountId);
+            }
+            return Ok(records);
         }
 
         [HttpPost("addNew")]
@@ -57,10 +63,10 @@ namespace WalletIO.Controllers
             }
         }
 
-        [HttpPut("{idEntry}")]
-        public IActionResult Update(int idEntry, [FromBody]Record record)
+        [HttpPut("{idRecord}")]
+        public IActionResult Update(int idRecord, [FromBody]Record record)
         {
-            record.Id = idEntry;
+            record.Id = idRecord;
 
             try
             {

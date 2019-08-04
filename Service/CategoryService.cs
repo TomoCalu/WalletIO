@@ -13,12 +13,18 @@ namespace WalletIO.Service
 {
     public interface ICategoryService
     {
+        Category GetById(int idCategory);
         int FindCategoryNameByCategiryId(int idCategory);
     }
 
     public class CategoryService : ICategoryService
     {
         private DataContext _context;
+
+        public Category GetById(int idCategory)
+        {
+            return _context.Categories.Find(idCategory);            
+        }
 
         public CategoryService(DataContext context)
         {

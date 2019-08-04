@@ -2,7 +2,8 @@ import config from 'config';
 import { authHeader, handleResponse, handleError } from '../_helpers';
 
 export const recordService = { 
-    addNew
+    addNew,
+    getByIdUser
 };
 
 function addNew(record) {
@@ -13,4 +14,13 @@ function addNew(record) {
     };
 
     return fetch(`${config.apiUrl}/records/addNew`, requestOptions).then(handleResponse).catch(handleError);
+}
+
+function getByIdUser(idUser) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/records/${idUser}`, requestOptions).then(handleResponse);
 }

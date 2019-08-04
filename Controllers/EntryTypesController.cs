@@ -26,7 +26,7 @@ namespace WalletIO.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetWithCategories(int idUser)
+        public IActionResult GetWithCategories()
         {
             var entryTypesWithCategories = _entryTypeService.GetWithCategories();
             return Ok(entryTypesWithCategories);
