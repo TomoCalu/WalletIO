@@ -40,7 +40,7 @@ namespace WalletIO.Controllers
                 record.EntryType = _entryTypeService.GetById(record.Category.EntryTypeId);
                 record.Account = _accountService.GetById(record.AccountId);
             }
-            return Ok(records);
+            return Ok(records.OrderByDescending(x => x.CreatedTimestamp));
         }
 
         [HttpPost("addNew")]

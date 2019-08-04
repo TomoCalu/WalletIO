@@ -207,10 +207,10 @@ export default {
             return;
         }
     },
-    created: async function(){
+    created: async function(){        
+        await this.getAllRecordsForUser();
         this.getEntryTypesWithCategories();
         this.getAllAccountsForUser();
-        await this.getAllRecordsForUser();
     },
     watch: {
         selectedEntryType: function (newEntryType, oldEntryType) {
