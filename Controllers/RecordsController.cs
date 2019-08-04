@@ -19,11 +19,15 @@ namespace WalletIO.Controllers
     {
         private IRecordService _recordService;
         private IAccountService _accountService;
+        private IEntryTypeService _entryTypeService;
+        private ICategoryService _categoryService;
 
-        public RecordsController(IRecordService recordService, IAccountService accountService)
+        public RecordsController(IRecordService recordService, IAccountService accountService, IEntryTypeService entryTypeService, ICategoryService categoryService)
         {
             _recordService = recordService;
             _accountService = accountService;
+            _entryTypeService = entryTypeService;
+            _categoryService = categoryService;
         }
 
         [HttpGet("{idAccount}")]
@@ -40,7 +44,10 @@ namespace WalletIO.Controllers
             {
                 // save 
                 _recordService.AddNew(record);
-                _accountService.DecreaseAccountMoneyAmount(record.AccountId, record.MoneyAmount);
+
+                int entryTypeId = _categoryService.FindCategoryNameByCategiryId(record.CategoryId);
+                bool isIncome = _entryTypeService.CheckIfIncome(entryTypeId);
+                _accountService.ChangeAccountMoneyAmount(record.AccountId, record.MoneyAmount, isIncome);
                 return Ok();
             }
             catch (AppException e)
