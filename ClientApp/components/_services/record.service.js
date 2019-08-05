@@ -3,7 +3,9 @@ import { authHeader, handleResponse, handleError } from '../_helpers';
 
 export const recordService = { 
     addNew,
-    getByIdUser
+    getByIdUser,
+    update,
+    delete: _delete
 };
 
 function addNew(record) {
@@ -23,4 +25,24 @@ function getByIdUser(idUser) {
     };
 
     return fetch(`${config.apiUrl}/records/${idUser}`, requestOptions).then(handleResponse);
+}
+
+function update(record) {
+    const requestOptions = {
+        method: 'PUT',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(record)
+    };
+
+    return fetch(`${config.apiUrl}/records/${record.id}`, requestOptions).then(handleResponse).catch(handleError);
+}
+
+// prefixed function name with underscore because delete is a reserved word in javascript
+function _delete(idRecord) {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/records/${idRecord}`, requestOptions).then(handleResponse);
 }

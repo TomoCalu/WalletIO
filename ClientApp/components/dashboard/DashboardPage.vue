@@ -454,8 +454,7 @@ export default {
       this.$validator.validate().then(async (valid) => {
         if (valid) {
           e.preventDefault();
-          if(this.checkIfAccountExists() == true)
-          {
+          if(this.checkIfAccountExists() == true) {
             this.updateAccount();  
           }
           else {

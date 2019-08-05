@@ -12,6 +12,8 @@ namespace WalletIO.Service
 {
     public interface IRecordService
     {
+        IEnumerable<Record> Get();
+        Record GetById(int idRecord);
         IEnumerable<Record> GetByIdAccount(int idAccount);
         void AddNew(Record record);
         void Update(Record record);
@@ -25,6 +27,16 @@ namespace WalletIO.Service
         public RecordService(DataContext context)
         {
             _context = context;
+        }
+
+        public IEnumerable<Record> Get()
+        {
+            return _context.Records.ToList();
+        }
+
+        public Record GetById(int idRecord)
+        {
+            return _context.Records.Find(idRecord); ;
         }
 
         public IEnumerable<Record> GetByIdAccount(int idAccount)
@@ -49,6 +61,8 @@ namespace WalletIO.Service
 
             newRecord.MoneyAmount = record.MoneyAmount;
             newRecord.Description = record.Description;
+            newRecord.AccountId = record.AccountId;
+            newRecord.CategoryId = record.CategoryId;
 
             _context.Records.Update(newRecord);
             _context.SaveChanges();

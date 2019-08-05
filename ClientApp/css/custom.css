@@ -2,3 +2,7 @@
     cursor: pointer;
     color: black;
 }
+
+.hover-record-options:hover {
+    cursor: pointer;
+}

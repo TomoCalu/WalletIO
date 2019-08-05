@@ -33,7 +33,7 @@ namespace WalletIO.Controllers
         [HttpGet("{idUser}")]
         public IActionResult GetByIdUserWithAccountEntryAndCategory(int idUser)
         {
-            var records = _recordService.GetByIdAccount(idUser);
+            var records = _recordService.Get();
             foreach(var record in records)
             {
                 record.Category = _categoryService.GetById(record.CategoryId);
@@ -50,10 +50,10 @@ namespace WalletIO.Controllers
             {
                 // save 
                 _recordService.AddNew(record);
-
-                int entryTypeId = _categoryService.FindCategoryNameByCategiryId(record.CategoryId);
+                int entryTypeId = _categoryService.GetEntryTypeIdFromCategoryId(record.CategoryId);
                 bool isIncome = _entryTypeService.CheckIfIncome(entryTypeId);
                 _accountService.ChangeAccountMoneyAmount(record.AccountId, record.MoneyAmount, isIncome);
+
                 return Ok();
             }
             catch (AppException e)
@@ -66,12 +66,30 @@ namespace WalletIO.Controllers
         [HttpPut("{idRecord}")]
         public IActionResult Update(int idRecord, [FromBody]Record record)
         {
+            decimal moneyAmountDifference;
             record.Id = idRecord;
 
             try
             {
-                // save 
+                Record oldRecord = _recordService.GetById(idRecord);
+                int oldEntryTypeId = _categoryService.GetEntryTypeIdFromCategoryId(oldRecord.CategoryId);
+                bool oldIsIncome = _entryTypeService.CheckIfIncome(oldEntryTypeId);
+                int entryTypeId = _categoryService.GetEntryTypeIdFromCategoryId(record.CategoryId);
+                bool isIncome = _entryTypeService.CheckIfIncome(entryTypeId);
+
+                if (oldIsIncome != isIncome)
+                {
+                    moneyAmountDifference = oldRecord.MoneyAmount + record.MoneyAmount;
+                }
+                else
+                {
+                    if (isIncome == false) moneyAmountDifference = record.MoneyAmount - oldRecord.MoneyAmount;
+                    else moneyAmountDifference = record.MoneyAmount - oldRecord.MoneyAmount;
+                }
+
+                _accountService.ChangeAccountMoneyAmount(record.AccountId, moneyAmountDifference, isIncome);
                 _recordService.Update(record);
+
                 return Ok();
             }
             catch (AppException e)
@@ -84,7 +102,15 @@ namespace WalletIO.Controllers
         [HttpDelete("{idRecord}")]
         public IActionResult Delete(int idRecord)
         {
+            Record record = _recordService.GetById(idRecord);
+            int entryTypeId = _categoryService.GetEntryTypeIdFromCategoryId(record.CategoryId);
+            bool isIncome = _entryTypeService.CheckIfIncome(entryTypeId);
+
+            record.MoneyAmount = record.MoneyAmount * -1;
+
+            _accountService.ChangeAccountMoneyAmount(record.AccountId, record.MoneyAmount, isIncome);
             _recordService.Delete(idRecord);
+
             return Ok();
         }
     }

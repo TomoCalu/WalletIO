@@ -14,7 +14,7 @@ namespace WalletIO.Service
     public interface ICategoryService
     {
         Category GetById(int idCategory);
-        int FindCategoryNameByCategiryId(int idCategory);
+        int GetEntryTypeIdFromCategoryId(int idCategory);
     }
 
     public class CategoryService : ICategoryService
@@ -31,7 +31,7 @@ namespace WalletIO.Service
             _context = context;
         }
 
-        public int FindCategoryNameByCategiryId(int idCategory)
+        public int GetEntryTypeIdFromCategoryId(int idCategory)
         {
             var category = _context.Categories.Find(idCategory);
 
