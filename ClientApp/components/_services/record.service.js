@@ -5,7 +5,8 @@ export const recordService = {
     addNew,
     getByIdUser,
     update,
-    delete: _delete
+    delete: _delete,
+    getSpendingsSums
 };
 
 function addNew(record) {
@@ -45,4 +46,14 @@ function _delete(idRecord) {
     };
 
     return fetch(`${config.apiUrl}/records/${idRecord}`, requestOptions).then(handleResponse);
+}
+
+function getSpendingsSums(idUser) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/records/recordDataSum/${idUser}`, requestOptions).then(handleResponse);
+
 }

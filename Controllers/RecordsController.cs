@@ -33,8 +33,13 @@ namespace WalletIO.Controllers
         [HttpGet("{idUser}")]
         public IActionResult GetByIdUserWithAccountEntryAndCategory(int idUser)
         {
-            var records = _recordService.Get();
-            foreach(var record in records)
+            var accounts = _accountService.GetByIdUser(idUser);
+            IEnumerable<Record> records = Enumerable.Empty<Record>();
+            foreach (Account account in accounts)
+            {
+                records = records.Concat(_recordService.GetByIdAccount(account.Id));
+            }
+            foreach(Record record in records)
             {
                 record.Category = _categoryService.GetById(record.CategoryId);
                 record.EntryType = _entryTypeService.GetById(record.Category.EntryTypeId);
@@ -112,6 +117,14 @@ namespace WalletIO.Controllers
             _recordService.Delete(idRecord);
 
             return Ok();
+        }
+
+        [HttpGet("recordDataSum/{idUser}")]
+        public IActionResult GetRecordDatSum(int idUser)
+        {
+            var entryTypes = _entryTypeService.GetWithCategories();
+            var recordsDataSum = _recordService.GetRecordsDataSum(entryTypes, idUser);
+            return Ok(recordsDataSum);
         }
     }
 }

@@ -18,6 +18,7 @@ namespace WalletIO.Service
         void AddNew(Record record);
         void Update(Record record);
         void Delete(int idRecord);
+        KeyValuePair<string[], decimal[]> GetRecordsDataSum(IEnumerable<EntryType> entryTypesWithCategories, int idUser);
     }
 
     public class RecordService : IRecordService
@@ -76,6 +77,25 @@ namespace WalletIO.Service
                 _context.Records.Remove(record);
                 _context.SaveChanges();
             }
+        }
+
+        public KeyValuePair<string[], decimal[]> GetRecordsDataSum(IEnumerable<EntryType> entryTypesWithCategories, int idUser)
+        {
+
+            IEnumerable<EntryType> entryTypesWithCategoriesNoIncome = entryTypesWithCategories.Where(x => x.Name != "Income");
+            var arraySize = entryTypesWithCategoriesNoIncome.Count();
+            string[] dataSumLabels = new string[arraySize];
+            decimal[] dataSumData = new decimal[arraySize];
+            for (int i = 0; i < arraySize; ++i)
+            {
+                EntryType entryTypeWithCategories = entryTypesWithCategoriesNoIncome.ElementAt(i);
+                dataSumData[i] = _context.Records.Where(x => entryTypeWithCategories.Categories.Any(y => y.Id == x.CategoryId) &&
+                                                             x.Account.UserId == idUser)
+                                                 .Sum(x => x.MoneyAmount);
+                dataSumLabels[i] = entryTypeWithCategories.Name;
+            }
+
+            return new KeyValuePair<string[], decimal[]>(dataSumLabels, dataSumData);
         }
     }
 }

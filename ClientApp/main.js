@@ -1,7 +1,7 @@
 import Vue from 'vue';
 //import Vuetify from 'vuetify';
 import VeeValidate from 'vee-validate';
-import Paginate from 'vuejs-paginate'
+import Chart from 'chart.js';
 import babelPolyfill from 'babel-polyfill';
 
 /*Fonts*/
@@ -10,7 +10,7 @@ import './css/nonito-fonts.css'
 
 /* Styles*/
 import './css/sb-admin-2.min.css'
-import './vendor/datatables/dataTables.bootstrap4.min.css'
+//import './vendor/datatables/dataTables.bootstrap4.min.css'
 import './css/custom.css'
 
 /*Bootstrap core JavaScript-*/
@@ -39,7 +39,6 @@ import { store } from './components/_store';
 
 //Vue.use(Vuetify)
 Vue.use(VeeValidate);
-Vue.component('paginate', Paginate)
 
 /*import { configureFakeBackend } from './components/_helpers';
 configureFakeBackend();*/

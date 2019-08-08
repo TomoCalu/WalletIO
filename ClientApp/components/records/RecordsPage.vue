@@ -275,6 +275,7 @@ export default {
             this.categories = null;
             return;
         },
+        
         getEntryTypesWithCategories() {            
             entryTypeService.getWithCategories().then(response => {            
                 this.entryTypes = response;

@@ -84,7 +84,7 @@
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Expenses structure</h6>
             <div class="dropdown no-arrow">
               <a
                 class="dropdown-toggle"
@@ -110,20 +110,9 @@
             </div>
           </div>
           <!-- Card Body -->
-          <div class="card-body">
-            <div class="chart-pie pt-4 pb-2">
-              <canvas id="myPieChart"></canvas>
-            </div>
-            <div class="mt-4 text-center small">
-              <span class="mr-2">
-                <i class="fas fa-circle text-primary"></i> Direct
-              </span>
-              <span class="mr-2">
-                <i class="fas fa-circle text-success"></i> Social
-              </span>
-              <span class="mr-2">
-                <i class="fas fa-circle text-info"></i> Referral
-              </span>
+          <div class="card-body" style="height:360px">
+            <div class="chart-pie pt-4 pb-2" >
+              <canvas id="allExpensesChart"></canvas>
             </div>
           </div>
         </div>
@@ -406,7 +395,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import { accountService } from '../_services';
+import { accountService, recordService } from '../_services';
 import Alert from "../alert/Alert";
 
 export default {
@@ -420,8 +409,21 @@ export default {
       },
       submitted: false,
       accountOptions: [],
-      idAccountToDelete: ''
-    };
+      idAccountToDelete: '',
+      expensesStructureData: '',
+      allExpensesChart : {
+        type: 'doughnut',
+        data: {
+          datasets: [
+            {
+              label: "Population (millions)",
+              backgroundColor: ["#eb4034", "#1cd1ed","#edce1c","#707070","#bc18d9", "#2bd918", "#4568f5", "#1cebb4", "#f00a97", "#d4c30b", "#d4d4d4"],
+              data: []
+            }
+          ],
+        }
+      }
+    }
   },
   computed: {
     ...mapState({
@@ -448,6 +450,13 @@ export default {
     deleteAccount() {
       accountService.delete(this.idAccountToDelete);
       window.location.reload()
+    },
+    async getExpensesStructure() {
+      await recordService.getSpendingsSums(this.account.user.id).then(response => {
+              this.expensesStructureData = response;
+            });
+      this.allExpensesChart.data.datasets[0].data = this.expensesStructureData.value;
+      this.allExpensesChart.data.labels = this.expensesStructureData.key;
     },
     handleSubmitAccount(e) {
       this.submitted = true;
@@ -488,18 +497,27 @@ export default {
       if(this.accounts.length == 0) return false;
       for(var i=0; i < this.accounts.length; i++)
       {
-        if(this.accounts[i].id == this.newAccount.id){
+        if(this.accounts[i].id == this.newAccount.id) {
           return true;
         } 
       }
       return false;
+    },
+    createChart(chartId, chartData) {
+      const ctx = document.getElementById(chartId);
+      const myChart = new Chart(ctx, {
+        type: chartData.type,        
+        data: chartData.data
+      });
     }
   },
   created: async function(){
     await this.getAllAccountsForUser();
+    await this.getExpensesStructure();
     for (var i=0; i<this.accounts.length; i++) { 
       this.accountOptions[i] = false;
     }
+    this.createChart('allExpensesChart', this.allExpensesChart);
   },
   components: {
     Alert
