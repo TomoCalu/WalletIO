@@ -126,5 +126,45 @@ namespace WalletIO.Controllers
             var recordsDataSum = _recordService.GetRecordsDataSum(entryTypes, idUser);
             return Ok(recordsDataSum);
         }
+
+        [HttpGet("balanceIncomeTrends/{idUser}")]
+        public IActionResult GetIncomeTrends(int idUser)
+        {
+            /*if (idAccount == null)
+            {
+                IEnumerable<Account> accounts = Enumerable.Empty<Account>();
+                accounts = _accountService.GetByIdUser(idUser);
+            }
+            else Account accounts = _accountService.GetById(idAccount);*/
+            var accounts = _accountService.GetByIdUser(idUser);
+
+            var incomeEntryType = _entryTypeService.GetIncomeObject();
+            IEnumerable<Record> records = Enumerable.Empty<Record>();
+
+            foreach (Account account in accounts)
+            {
+                records = records.Concat(_recordService.GetByIdAccount(account.Id));
+            }
+            var incomeTrendsSum = _recordService.GetBalanceIncomeChangeForThisWeek(idUser, incomeEntryType, null);
+
+            return Ok(incomeTrendsSum);
+        }
+
+        [HttpGet("balanceSpendingsTrends/{idUser}")]
+        public IActionResult GetSpendingsTrends(int idUser)
+        {
+            var accounts = _accountService.GetByIdUser(idUser);
+
+            var incomeEntryType = _entryTypeService.GetIncomeObject();
+            IEnumerable<Record> records = Enumerable.Empty<Record>();
+
+            foreach (Account account in accounts)
+            {
+                records = records.Concat(_recordService.GetByIdAccount(account.Id));
+            }
+            var spendingsTrendsSum = _recordService.GetBalanceSpendingsChangeForThisWeek(idUser, incomeEntryType, null);
+
+            return Ok(spendingsTrendsSum);
+        }
     }
 }

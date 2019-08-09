@@ -45,7 +45,7 @@
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Spendings and income trends</h6>
             <div class="dropdown no-arrow">
               <a
                 class="dropdown-toggle"
@@ -73,7 +73,7 @@
           <!-- Card Body -->
           <div class="card-body">
             <div class="chart-area">
-              <canvas id="myAreaChart"></canvas>
+              <canvas id="balanceTrendsChart"></canvas>
             </div>
           </div>
         </div>
@@ -111,7 +111,7 @@
           </div>
           <!-- Card Body -->
           <div class="card-body" style="height:360px">
-            <div class="chart-pie pt-4 pb-2" >
+            <div class="chart-pie pt-6 pb-2">
               <canvas id="allExpensesChart"></canvas>
             </div>
           </div>
@@ -119,183 +119,7 @@
       </div>
     </div>
 
-    <!-- Content Row -->
-    <div class="row">
-      <!-- Content Column -->
-      <div class="col-lg-6 mb-4">
-        <!-- Project Card Example -->
-        <div class="card shadow mb-4">
-          <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
-          </div>
-          <div class="card-body">
-            <h4 class="small font-weight-bold">
-              Server Migration
-              <span class="float-right">20%</span>
-            </h4>
-            <div class="progress mb-4">
-              <div
-                class="progress-bar bg-danger"
-                role="progressbar"
-                style="width: 20%"
-                aria-valuenow="20"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-            <h4 class="small font-weight-bold">
-              Sales Tracking
-              <span class="float-right">40%</span>
-            </h4>
-            <div class="progress mb-4">
-              <div
-                class="progress-bar bg-warning"
-                role="progressbar"
-                style="width: 40%"
-                aria-valuenow="40"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-            <h4 class="small font-weight-bold">
-              Customer Database
-              <span class="float-right">60%</span>
-            </h4>
-            <div class="progress mb-4">
-              <div
-                class="progress-bar"
-                role="progressbar"
-                style="width: 60%"
-                aria-valuenow="60"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-            <h4 class="small font-weight-bold">
-              Payout Details
-              <span class="float-right">80%</span>
-            </h4>
-            <div class="progress mb-4">
-              <div
-                class="progress-bar bg-info"
-                role="progressbar"
-                style="width: 80%"
-                aria-valuenow="80"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-            <h4 class="small font-weight-bold">
-              Account Setup
-              <span class="float-right">Complete!</span>
-            </h4>
-            <div class="progress">
-              <div
-                class="progress-bar bg-success"
-                role="progressbar"
-                style="width: 100%"
-                aria-valuenow="100"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Color System -->
-        <div class="row">
-          <div class="col-lg-6 mb-4">
-            <div class="card bg-primary text-white shadow">
-              <div class="card-body">
-                Primary
-                <div class="text-white-50 small">#4e73df</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 mb-4">
-            <div class="card bg-success text-white shadow">
-              <div class="card-body">
-                Success
-                <div class="text-white-50 small">#1cc88a</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 mb-4">
-            <div class="card bg-info text-white shadow">
-              <div class="card-body">
-                Info
-                <div class="text-white-50 small">#36b9cc</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 mb-4">
-            <div class="card bg-warning text-white shadow">
-              <div class="card-body">
-                Warning
-                <div class="text-white-50 small">#f6c23e</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 mb-4">
-            <div class="card bg-danger text-white shadow">
-              <div class="card-body">
-                Danger
-                <div class="text-white-50 small">#e74a3b</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 mb-4">
-            <div class="card bg-secondary text-white shadow">
-              <div class="card-body">
-                Secondary
-                <div class="text-white-50 small">#858796</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-6 mb-4">
-        <!-- Illustrations -->
-        <div class="card shadow mb-4">
-          <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-          </div>
-          <div class="card-body">
-            <div class="text-center">
-              <img
-                class="img-fluid px-3 px-sm-4 mt-3 mb-4"
-                style="width: 25rem;"
-                src="img/undraw_posting_photo.svg"
-                alt
-              />
-            </div>
-            <p>
-              Add some quality, svg illustrations to your project courtesy of
-              <a target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a constantly updated collection of beautiful svg images that you can use completely free and without attribution!
-            </p>
-            <a
-              target="_blank"
-              rel="nofollow"
-              href="https://undraw.co/"
-            >Browse Illustrations on unDraw &rarr;</a>
-          </div>
-        </div>
-
-        <!-- Approach -->
-        <div class="card shadow mb-4">
-          <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
-          </div>
-          <div class="card-body">
-            <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce CSS bloat and poor page performance. Custom CSS classes are used to create custom components and custom utility classes.</p>
-            <p
-              class="mb-0"
-            >Before working with this theme, you should become familiar with the Bootstrap framework, especially the utility classes.</p>
-          </div>
-        </div>
-      </div>
-    </div>  
+    
 
     <!-- Add new account modal-->
     <div class="modal fade" id="newAccountModal" tabindex="-1" role="dialog" aria-labelledby="newAccountModalLabel" aria-hidden="true">
@@ -411,16 +235,53 @@ export default {
       accountOptions: [],
       idAccountToDelete: '',
       expensesStructureData: '',
+      balanceIncomeTrendsData: '',
+      balanceSpendingsTrendsData: '',
       allExpensesChart : {
-        type: 'doughnut',
+        type: 'pie',
         data: {
           datasets: [
             {
-              label: "Population (millions)",
               backgroundColor: ["#eb4034", "#1cd1ed","#edce1c","#707070","#bc18d9", "#2bd918", "#4568f5", "#1cebb4", "#f00a97", "#d4d4d4"],
+              data: [],
+              borderWidth: 0,
+            }
+          ],
+        },
+        options: {
+          cutoutPercentage: 85, 
+          legend: {position:'bottom', 
+            labels:{pointStyle:'circle',
+                    usePointStyle:true}
+          }
+        }
+      },
+      balanceTrendsChart : {
+        type: 'line',
+        data: {
+          datasets: [
+            {
+              borderColor: ["#30fc03"],
+              label: "Income (kuna)",
+              data: []
+            },
+            {
+              borderColor: ["#fc2003"],
+              label: "Spendings (kuna)",
               data: []
             }
           ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          }
         }
       }
     }
@@ -457,6 +318,17 @@ export default {
             });
       this.allExpensesChart.data.datasets[0].data = this.expensesStructureData.value;
       this.allExpensesChart.data.labels = this.expensesStructureData.key;
+    },
+    async getBalanceIncomeAndSpendingsTrendsStructure() {
+      await recordService.getBalanceIncomeTrends(this.account.user.id).then(response => {
+              this.balanceIncomeTrendsData = response;
+            });
+      await recordService.getBalanceSpendingsTrends(this.account.user.id).then(response => {
+              this.balanceSpendingsTrendsData = response;
+            });
+      this.balanceTrendsChart.data.datasets[0].data = this.balanceIncomeTrendsData.value;
+      this.balanceTrendsChart.data.datasets[1].data = this.balanceSpendingsTrendsData;
+      this.balanceTrendsChart.data.labels = this.balanceIncomeTrendsData.key;
     },
     handleSubmitAccount(e) {
       this.submitted = true;
@@ -507,17 +379,20 @@ export default {
       const ctx = document.getElementById(chartId);
       const myChart = new Chart(ctx, {
         type: chartData.type,        
-        data: chartData.data
+        data: chartData.data,
+        options: chartData.options
       });
     }
   },
   created: async function(){
     await this.getAllAccountsForUser();
     await this.getExpensesStructure();
+    await this.getBalanceIncomeAndSpendingsTrendsStructure();
     for (var i=0; i<this.accounts.length; i++) { 
       this.accountOptions[i] = false;
     }
-    this.createChart('allExpensesChart', this.allExpensesChart);
+    this.createChart('balanceTrendsChart', this.balanceTrendsChart);
+    this.createChart('allExpensesChart', this.allExpensesChart);    
   },
   components: {
     Alert

@@ -10,13 +10,12 @@ import './css/nonito-fonts.css'
 
 /* Styles*/
 import './css/sb-admin-2.min.css'
-//import './vendor/datatables/dataTables.bootstrap4.min.css'
+//import './vendor/datatables/dataTables.bootstrap4.css'
 import './css/custom.css'
 
 /*Bootstrap core JavaScript-*/
 //import './vendor/jquery/jquery.min.js'
 import './vendor/bootstrap/js/bootstrap.bundle.min.js'
-//import './vendor/datatables/dataTables.bootstrap4.min.js'
 //import './vendor/datatables/jquery.dataTables.min.js'
 //import './vendor/datatables/dataTables.bootstrap4.min.js'
 
