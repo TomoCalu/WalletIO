@@ -7,8 +7,7 @@ export const recordService = {
     update,
     delete: _delete,
     getSpendingsSums,
-    getBalanceIncomeTrends,
-    getBalanceSpendingsTrends
+    getBalanceTrends
 };
 
 function addNew(record) {
@@ -47,7 +46,7 @@ function _delete(idRecord) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/records/${idRecord}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/records/${idRecord}`, requestOptions).then(handleResponse).catch(handleError);
 }
 
 function getSpendingsSums(idUser) {
@@ -56,26 +55,16 @@ function getSpendingsSums(idUser) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/records/recordDataSum/${idUser}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/records/recordDataSum/${idUser}`, requestOptions).then(handleResponse).catch(handleError);
 
 }
 
-function getBalanceIncomeTrends(idUser) {
+function getBalanceTrends(idUser, selectedRange) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/records/balanceIncomeTrends/${idUser}`, requestOptions).then(handleResponse);
-
-}
-
-function getBalanceSpendingsTrends(idUser) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`${config.apiUrl}/records/balanceSpendingsTrends/${idUser}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/records/incomeAndSpendingTrends/${idUser}/${selectedRange}`, requestOptions).then(handleResponse).catch(handleError);
 
 }

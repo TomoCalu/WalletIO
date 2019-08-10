@@ -127,8 +127,8 @@ namespace WalletIO.Controllers
             return Ok(recordsDataSum);
         }
 
-        [HttpGet("balanceIncomeTrends/{idUser}")]
-        public IActionResult GetIncomeTrends(int idUser)
+        [HttpGet("incomeAndSpendingTrends/{idUser}/{selectedRange}")]
+        public IActionResult GetIncomeTrends(int idUser, string selectedRange)
         {
             /*if (idAccount == null)
             {
@@ -145,26 +145,26 @@ namespace WalletIO.Controllers
             {
                 records = records.Concat(_recordService.GetByIdAccount(account.Id));
             }
-            var incomeTrendsSum = _recordService.GetBalanceIncomeChangeForThisWeek(idUser, incomeEntryType, null);
-
-            return Ok(incomeTrendsSum);
-        }
-
-        [HttpGet("balanceSpendingsTrends/{idUser}")]
-        public IActionResult GetSpendingsTrends(int idUser)
-        {
-            var accounts = _accountService.GetByIdUser(idUser);
-
-            var incomeEntryType = _entryTypeService.GetIncomeObject();
-            IEnumerable<Record> records = Enumerable.Empty<Record>();
-
-            foreach (Account account in accounts)
+            if (selectedRange == "Week")
             {
-                records = records.Concat(_recordService.GetByIdAccount(account.Id));
+                var incomeTrendsSum = _recordService.GetBalanceChangeForThisWeek(idUser, incomeEntryType, null);
+                return Ok(incomeTrendsSum);
             }
-            var spendingsTrendsSum = _recordService.GetBalanceSpendingsChangeForThisWeek(idUser, incomeEntryType, null);
 
-            return Ok(spendingsTrendsSum);
+            else if (selectedRange == "Month")
+            {
+                var incomeTrendsSum = _recordService.GetBalanceChangeForThisMonth(idUser, incomeEntryType, null);
+                return Ok(incomeTrendsSum);
+            }
+
+            else if (selectedRange == "Year")
+            {
+                var incomeTrendsSum = _recordService.GetBalanceChangeForThisYear(idUser, incomeEntryType, null);
+                return Ok(incomeTrendsSum);
+            }
+
+            return BadRequest(new { message = "Wrong time range" });
+
         }
     }
 }

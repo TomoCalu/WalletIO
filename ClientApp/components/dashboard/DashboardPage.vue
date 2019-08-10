@@ -47,26 +47,14 @@
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">Spendings and income trends</h6>
             <div class="dropdown no-arrow">
-              <a
-                class="dropdown-toggle"
-                href="#"
-                role="button"
-                id="dropdownMenuLink"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
+              <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
               </a>
-              <div
-                class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                aria-labelledby="dropdownMenuLink"
-              >
-                <div class="dropdown-header">Dropdown Header:</div>
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
+              <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                <div class="dropdown-header">Select range:</div>
+                <div v-for="choice in balanceDataChoices" v-bind:key="choice.id">
+                  <button class="dropdown-item hover-record-options" v-on:click="selectedBalanceDataRange = choice">{{choice}}</button>
+                </div>
               </div>
             </div>
           </div>
@@ -86,21 +74,10 @@
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">Expenses structure</h6>
             <div class="dropdown no-arrow">
-              <a
-                class="dropdown-toggle"
-                href="#"
-                role="button"
-                id="dropdownMenuLink"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
+              <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
               </a>
-              <div
-                class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                aria-labelledby="dropdownMenuLink"
-              >
+              <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                 <div class="dropdown-header">Dropdown Header:</div>
                 <a class="dropdown-item" href="#">Action</a>
                 <a class="dropdown-item" href="#">Another action</a>
@@ -235,8 +212,9 @@ export default {
       accountOptions: [],
       idAccountToDelete: '',
       expensesStructureData: '',
-      balanceIncomeTrendsData: '',
-      balanceSpendingsTrendsData: '',
+      balanceTrendsData: '',
+      balanceDataChoices: ['Week', 'Month', 'Year'],
+      selectedBalanceDataRange: 'Week',
       allExpensesChart : {
         type: 'pie',
         data: {
@@ -319,16 +297,13 @@ export default {
       this.allExpensesChart.data.datasets[0].data = this.expensesStructureData.value;
       this.allExpensesChart.data.labels = this.expensesStructureData.key;
     },
-    async getBalanceIncomeAndSpendingsTrendsStructure() {
-      await recordService.getBalanceIncomeTrends(this.account.user.id).then(response => {
-              this.balanceIncomeTrendsData = response;
+    async getBalanceTrendsStructure() {
+      await recordService.getBalanceTrends(this.account.user.id, this.selectedBalanceDataRange).then(response => {
+              this.balanceTrendsData = response;
             });
-      await recordService.getBalanceSpendingsTrends(this.account.user.id).then(response => {
-              this.balanceSpendingsTrendsData = response;
-            });
-      this.balanceTrendsChart.data.datasets[0].data = this.balanceIncomeTrendsData.value;
-      this.balanceTrendsChart.data.datasets[1].data = this.balanceSpendingsTrendsData;
-      this.balanceTrendsChart.data.labels = this.balanceIncomeTrendsData.key;
+      this.balanceTrendsChart.data.datasets[0].data = this.balanceTrendsData.item2;
+      this.balanceTrendsChart.data.datasets[1].data = this.balanceTrendsData.item3;
+      this.balanceTrendsChart.data.labels = this.balanceTrendsData.item1;
     },
     handleSubmitAccount(e) {
       this.submitted = true;
@@ -387,12 +362,18 @@ export default {
   created: async function(){
     await this.getAllAccountsForUser();
     await this.getExpensesStructure();
-    await this.getBalanceIncomeAndSpendingsTrendsStructure();
+    await this.getBalanceTrendsStructure();
     for (var i=0; i<this.accounts.length; i++) { 
       this.accountOptions[i] = false;
     }
     this.createChart('balanceTrendsChart', this.balanceTrendsChart);
     this.createChart('allExpensesChart', this.allExpensesChart);    
+  },
+  watch: {
+    selectedBalanceDataRange: async function (newRange, oldRange) {
+      await this.getBalanceTrendsStructure();
+      this.createChart('balanceTrendsChart', this.balanceTrendsChart);
+    }
   },
   components: {
     Alert

@@ -229,7 +229,7 @@
           <!-- End of Topbar -->
 
           <div>
-            <!--<Alert v-if="alert.message" :class="`alert ${alert.type}`" />-->
+            <Alert v-if="alert.message" :class="`alert ${alert.type}`" />
             <router-view></router-view>
           </div>
         </div>
