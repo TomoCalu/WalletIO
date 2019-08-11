@@ -6,3 +6,7 @@
 .hover-record-options:hover {
     cursor: pointer;
 }
+
+.selected-account-colour {
+    color: #1cc88a;
+}

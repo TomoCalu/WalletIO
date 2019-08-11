@@ -28,8 +28,8 @@
                   class="text-xs font-weight-bold text-success text-uppercase mb-1">{{account.name}}</div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{account.moneyAmount}} KN</div>
               </div>
-              <div class="col-auto">
-                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+              <div class="col-auto hover-record-options"  v-on:click="toggleSelectedAccount(account.id)">
+                <i class="fas fa-dollar-sign fa-2x" v-bind:class="[checkIfSelected(account.id)? 'selected-account-colour' : 'text-gray-300']"></i>
               </div>
             </div>
           </div>
@@ -45,7 +45,7 @@
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Spendings and income trends</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Spendings and income trends ({{selectedBalanceDataRange}})</h6>
             <div class="dropdown no-arrow">
               <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -215,7 +215,9 @@ export default {
       balanceTrendsData: '',
       balanceDataChoices: ['Week', 'Month', 'Year'],
       selectedBalanceDataRange: 'Week',
-      allExpensesChart : {
+      selectedAccounts: [],
+      selectedAccountsString: '',
+      allExpensesChart: {
         type: 'pie',
         data: {
           datasets: [
@@ -297,10 +299,22 @@ export default {
       this.allExpensesChart.data.datasets[0].data = this.expensesStructureData.value;
       this.allExpensesChart.data.labels = this.expensesStructureData.key;
     },
-    async getBalanceTrendsStructure() {
-      await recordService.getBalanceTrends(this.account.user.id, this.selectedBalanceDataRange).then(response => {
-              this.balanceTrendsData = response;
-            });
+    async getBalanceTrendsStructure() { 
+      if (this.selectedAccounts.length > 0) {
+        this.selectedAccounts.forEach(selectedAccount => {
+          this.selectedAccountsString = this.selectedAccountsString.concat('selectedAccounts=',selectedAccount,'&');
+        });
+        this.selectedAccountsString  = this.selectedAccountsString.substring(0, this.selectedAccountsString.length - 1);
+        await recordService.getBalanceTrends(this.account.user.id, this.selectedBalanceDataRange, this.selectedAccountsString).then(response => {
+          this.balanceTrendsData = response;
+        });
+        this.selectedAccountsString='';
+      }
+      else {        
+        await recordService.getBalanceTrends(this.account.user.id, this.selectedBalanceDataRange, null).then(response => {
+          this.balanceTrendsData = response;
+        });
+      }
       this.balanceTrendsChart.data.datasets[0].data = this.balanceTrendsData.item2;
       this.balanceTrendsChart.data.datasets[1].data = this.balanceTrendsData.item3;
       this.balanceTrendsChart.data.labels = this.balanceTrendsData.item1;
@@ -357,6 +371,23 @@ export default {
         data: chartData.data,
         options: chartData.options
       });
+    },
+    toggleSelectedAccount(accountId) {
+      for(var i=0; i<this.selectedAccounts.length; i++) {
+        if(this.selectedAccounts[i] == accountId) {
+          this.selectedAccounts.splice(i,1);
+          return;
+        }
+      }
+      this.selectedAccounts.push(accountId)
+    },
+    checkIfSelected(accountId){
+      if(this.selectedAccounts.length == 0) return false;
+      for(var i=0; i<this.selectedAccounts.length; i++)
+      {
+        if(this.selectedAccounts[i] == accountId) return true;
+      }
+      return false;
     }
   },
   created: async function(){
@@ -371,6 +402,10 @@ export default {
   },
   watch: {
     selectedBalanceDataRange: async function (newRange, oldRange) {
+      await this.getBalanceTrendsStructure();
+      this.createChart('balanceTrendsChart', this.balanceTrendsChart);
+    },
+    selectedAccounts: async function (newList, oldList) {
       await this.getBalanceTrendsStructure();
       this.createChart('balanceTrendsChart', this.balanceTrendsChart);
     }

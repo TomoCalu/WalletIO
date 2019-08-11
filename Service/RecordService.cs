@@ -20,9 +20,9 @@ namespace WalletIO.Service
         void Update(Record record);
         void Delete(int idRecord);
         KeyValuePair<string[], decimal[]> GetRecordsDataSum(IEnumerable<EntryType> entryTypesWithCategories, int idUser);
-        Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisWeek(int idUser, EntryType incomeEntryType, IEnumerable<Record> records);
-        Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisMonth(int idUser, EntryType incomeEntryType, IEnumerable<Record> records);
-        Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisYear(int idUser, EntryType incomeEntryType, IEnumerable<Record> records);
+        Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisWeek(int?[] selectedAccounts, EntryType incomeEntryType);
+        Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisMonth(int?[] selectedAccounts, EntryType incomeEntryType);
+        Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisYear(int?[] selectedAccounts, EntryType incomeEntryType);
     }
 
     public class RecordService : IRecordService
@@ -102,7 +102,7 @@ namespace WalletIO.Service
             return new KeyValuePair<string[], decimal[]>(dataSumLabels, dataSumData);
         }
 
-        public Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisWeek(int idUser, EntryType incomeEntryType, IEnumerable<Record> records)
+        public Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisWeek(int?[] selectedAccounts, EntryType incomeEntryType)
         {
             string[] daysOfThisWeek = new string[7];
             decimal[] incomeForThisWeek = new decimal[7];
@@ -113,12 +113,12 @@ namespace WalletIO.Service
             {
                 incomeForThisWeek[i] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date == date) &&
                                                                     x.Category.EntryTypeId == incomeEntryType.Id &&
-                                                                    x.Account.UserId == idUser)
+                                                                    selectedAccounts.Contains(x.AccountId))
                                                         .Sum(x => x.MoneyAmount);
 
                 spendingsForThisWeek[i] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date == date) &&
                                                                        x.Category.EntryTypeId != incomeEntryType.Id &&
-                                                                       x.Account.UserId == idUser)
+                                                                       selectedAccounts.Contains(x.AccountId))
                                                           .Sum(x => x.MoneyAmount);
                 daysOfThisWeek[i] = date.ToString("MM/dd/yyyy");
                 date = date.AddDays(-1);
@@ -127,25 +127,25 @@ namespace WalletIO.Service
             return Tuple.Create(daysOfThisWeek, incomeForThisWeek, spendingsForThisWeek);
         }
 
-        public Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisMonth(int idUser, EntryType incomeEntryType, IEnumerable<Record> records)
+        public Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisMonth(int?[] selectedAccounts, EntryType incomeEntryType)
         {
-            string[] weeksOfThisMonth = new string[5];
-            decimal[] incomeForThisMonth = new decimal[5];
-            decimal[] spendingsForThisMonth = new decimal[5];
+            string[] weeksOfThisMonth = new string[6];
+            decimal[] incomeForThisMonth = new decimal[6];
+            decimal[] spendingsForThisMonth = new decimal[6];
 
             DateTime date = DateTime.Now.Date;
-            for (int i = 28; i >= 0; i=i-7)
+            for (int i = 35; i >= 0; i=i-7)
             {
                 incomeForThisMonth[i/7] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date <= date) &&
                                                                    (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date > date.AddDays(-7)) &&
                                                                    x.Category.EntryTypeId == incomeEntryType.Id &&
-                                                                   x.Account.UserId == idUser)
+                                                                   selectedAccounts.Contains(x.AccountId))
                                                         .Sum(x => x.MoneyAmount);
 
                 spendingsForThisMonth[i / 7] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date <= date) &&
                                                                      (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date > date.AddDays(-7)) &&
                                                                      x.Category.EntryTypeId != incomeEntryType.Id &&
-                                                                     x.Account.UserId == idUser)
+                                                                     selectedAccounts.Contains(x.AccountId))
                                                         .Sum(x => x.MoneyAmount);
 
                 weeksOfThisMonth[i/7] = date.ToString("MM/dd/yyyy");
@@ -154,7 +154,7 @@ namespace WalletIO.Service
 
             return Tuple.Create(weeksOfThisMonth, incomeForThisMonth, spendingsForThisMonth);
         }
-        public Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisYear(int idUser, EntryType incomeEntryType, IEnumerable<Record> records)
+        public Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisYear(int?[] selectedAccounts, EntryType incomeEntryType)
         {
             string[] monthsOfThisYear = new string[12];
             decimal[] incomeForThisYear = new decimal[12];
@@ -167,13 +167,13 @@ namespace WalletIO.Service
                 incomeForThisYear[i] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Month == currentDate.Month) &&
                                                                    (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Year == currentDate.Year) &&
                                                                    x.Category.EntryTypeId == incomeEntryType.Id &&
-                                                                   x.Account.UserId == idUser)
+                                                                   selectedAccounts.Contains(x.AccountId))
                                                        .Sum(x => x.MoneyAmount);
 
                 spendingsForThisYear[i] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Month == currentDate.Month) &&
                                                                       (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Year == currentDate.Year) &&
                                                                       x.Category.EntryTypeId != incomeEntryType.Id &&
-                                                                      x.Account.UserId == idUser)
+                                                                      selectedAccounts.Contains(x.AccountId))
                                                           .Sum(x => x.MoneyAmount);
 
                 monthsOfThisYear[i] = month;

@@ -128,38 +128,34 @@ namespace WalletIO.Controllers
         }
 
         [HttpGet("incomeAndSpendingTrends/{idUser}/{selectedRange}")]
-        public IActionResult GetIncomeTrends(int idUser, string selectedRange)
+        public IActionResult GetIncomeTrends(int idUser, string selectedRange, [FromQuery]int?[] selectedAccounts)
         {
-            /*if (idAccount == null)
+            if (selectedAccounts.Length == 0)
             {
-                IEnumerable<Account> accounts = Enumerable.Empty<Account>();
-                accounts = _accountService.GetByIdUser(idUser);
+                var accounts = _accountService.GetByIdUser(idUser).ToList();
+                selectedAccounts = new int?[accounts.Count()];
+
+                for(int i=0; i<accounts.Count(); i++)
+                {
+                    selectedAccounts[i] = accounts.ElementAt(i).Id;
+                }
             }
-            else Account accounts = _accountService.GetById(idAccount);*/
-            var accounts = _accountService.GetByIdUser(idUser);
 
             var incomeEntryType = _entryTypeService.GetIncomeObject();
-            IEnumerable<Record> records = Enumerable.Empty<Record>();
 
-            foreach (Account account in accounts)
-            {
-                records = records.Concat(_recordService.GetByIdAccount(account.Id));
-            }
             if (selectedRange == "Week")
             {
-                var incomeTrendsSum = _recordService.GetBalanceChangeForThisWeek(idUser, incomeEntryType, null);
+                var incomeTrendsSum = _recordService.GetBalanceChangeForThisWeek(selectedAccounts, incomeEntryType);
                 return Ok(incomeTrendsSum);
             }
-
             else if (selectedRange == "Month")
             {
-                var incomeTrendsSum = _recordService.GetBalanceChangeForThisMonth(idUser, incomeEntryType, null);
+                var incomeTrendsSum = _recordService.GetBalanceChangeForThisMonth(selectedAccounts, incomeEntryType);
                 return Ok(incomeTrendsSum);
             }
-
             else if (selectedRange == "Year")
             {
-                var incomeTrendsSum = _recordService.GetBalanceChangeForThisYear(idUser, incomeEntryType, null);
+                var incomeTrendsSum = _recordService.GetBalanceChangeForThisYear(selectedAccounts, incomeEntryType);
                 return Ok(incomeTrendsSum);
             }
 

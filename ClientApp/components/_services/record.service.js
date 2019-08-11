@@ -59,12 +59,11 @@ function getSpendingsSums(idUser) {
 
 }
 
-function getBalanceTrends(idUser, selectedRange) {
+function getBalanceTrends(idUser, selectedRange, selectedAccounts) {
     const requestOptions = {
         method: 'GET',
-        headers: authHeader()
-    };
+        headers: authHeader(),
+    };        
 
-    return fetch(`${config.apiUrl}/records/incomeAndSpendingTrends/${idUser}/${selectedRange}`, requestOptions).then(handleResponse).catch(handleError);
-
+    return fetch(`${config.apiUrl}/records/incomeAndSpendingTrends/${idUser}/${selectedRange}?${selectedAccounts}`, requestOptions).then(handleResponse).catch(handleError);
 }
