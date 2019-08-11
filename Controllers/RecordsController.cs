@@ -119,12 +119,43 @@ namespace WalletIO.Controllers
             return Ok();
         }
 
-        [HttpGet("recordDataSum/{idUser}")]
-        public IActionResult GetRecordDatSum(int idUser)
+        [HttpGet("recordDataSum/{idUser}/{selectedRange}")]
+        public IActionResult GetRecordDatSum(int idUser, string selectedRange, [FromQuery]int?[] selectedAccounts)
         {
+            if (selectedAccounts.Length == 0)
+            {
+                var accounts = _accountService.GetByIdUser(idUser).ToList();
+                selectedAccounts = new int?[accounts.Count()];
+
+                for (int i = 0; i < accounts.Count(); i++)
+                {
+                    selectedAccounts[i] = accounts.ElementAt(i).Id;
+                }
+            }
+
             var entryTypes = _entryTypeService.GetWithCategories();
-            var recordsDataSum = _recordService.GetRecordsDataSum(entryTypes, idUser);
-            return Ok(recordsDataSum);
+            if (selectedRange == "All")
+            {
+                var recordsDataSum = _recordService.GetRecordsDataSum(selectedAccounts, entryTypes);
+                return Ok(recordsDataSum);
+            }
+            else if (selectedRange == "Last 7 days")
+            {
+                var recordsDataSum = _recordService.GetRecordsDataSumForLastWeek(selectedAccounts, entryTypes);
+                return Ok(recordsDataSum);
+            }
+            else if (selectedRange == "Last 30 days")
+            {
+                var recordsDataSum = _recordService.GetRecordsDataSumForLastMonth(selectedAccounts, entryTypes);
+                return Ok(recordsDataSum);
+            }
+            else if (selectedRange == "Last year")
+            {
+                var recordsDataSum = _recordService.GetRecordsDataSumForLastYear(selectedAccounts, entryTypes);
+                return Ok(recordsDataSum);
+            }
+
+            return BadRequest(new { message = "Wrong time range" });
         }
 
         [HttpGet("incomeAndSpendingTrends/{idUser}/{selectedRange}")]

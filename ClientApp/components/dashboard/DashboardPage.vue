@@ -72,17 +72,16 @@
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Expenses structure</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Expenses structure ({{selectedExpensesStructureDataRange}})</h6>
             <div class="dropdown no-arrow">
               <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                <div class="dropdown-header">Dropdown Header:</div>
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-header">Select range:</div>
+                <div v-for="choice in expensesStructureDataChoices" v-bind:key="choice.id">
+                  <button class="dropdown-item hover-record-options" v-on:click="selectedExpensesStructureDataRange = choice">{{choice}}</button>
+                </div>
               </div>
             </div>
           </div>
@@ -212,6 +211,8 @@ export default {
       accountOptions: [],
       idAccountToDelete: '',
       expensesStructureData: '',
+      expensesStructureDataChoices: ['Last 7 days', 'Last 30 days', 'Last year', 'All'],
+      selectedExpensesStructureDataRange: 'All',
       balanceTrendsData: '',
       balanceDataChoices: ['Week', 'Month', 'Year'],
       selectedBalanceDataRange: 'Week',
@@ -293,9 +294,21 @@ export default {
       window.location.reload()
     },
     async getExpensesStructure() {
-      await recordService.getSpendingsSums(this.account.user.id).then(response => {
-              this.expensesStructureData = response;
-            });
+      if (this.selectedAccounts.length > 0) {
+        this.selectedAccounts.forEach(selectedAccount => {
+          this.selectedAccountsString = this.selectedAccountsString.concat('selectedAccounts=',selectedAccount,'&');
+        });
+        this.selectedAccountsString  = this.selectedAccountsString.substring(0, this.selectedAccountsString.length - 1);
+        await recordService.getSpendingsSums(this.account.user.id, this.selectedExpensesStructureDataRange, this.selectedAccountsString).then(response => {
+          this.expensesStructureData = response;
+        });
+        this.selectedAccountsString='';        
+      }
+      else {        
+        await recordService.getSpendingsSums(this.account.user.id, this.selectedExpensesStructureDataRange, null).then(response => {
+          this.expensesStructureData = response;
+        });
+      }
       this.allExpensesChart.data.datasets[0].data = this.expensesStructureData.value;
       this.allExpensesChart.data.labels = this.expensesStructureData.key;
     },
@@ -405,9 +418,15 @@ export default {
       await this.getBalanceTrendsStructure();
       this.createChart('balanceTrendsChart', this.balanceTrendsChart);
     },
+    selectedExpensesStructureDataRange: async function (newRange, oldRange) {
+      await this.getExpensesStructure();
+      this.createChart('allExpensesChart', this.allExpensesChart);
+    },
     selectedAccounts: async function (newList, oldList) {
       await this.getBalanceTrendsStructure();
+      await this.getExpensesStructure();
       this.createChart('balanceTrendsChart', this.balanceTrendsChart);
+      this.createChart('allExpensesChart', this.allExpensesChart); 
     }
   },
   components: {

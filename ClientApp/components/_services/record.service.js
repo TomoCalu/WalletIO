@@ -49,13 +49,13 @@ function _delete(idRecord) {
     return fetch(`${config.apiUrl}/records/${idRecord}`, requestOptions).then(handleResponse).catch(handleError);
 }
 
-function getSpendingsSums(idUser) {
+function getSpendingsSums(idUser, selectedRange, selectedAccounts) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/records/recordDataSum/${idUser}`, requestOptions).then(handleResponse).catch(handleError);
+    return fetch(`${config.apiUrl}/records/recordDataSum/${idUser}/${selectedRange}?${selectedAccounts}`, requestOptions).then(handleResponse).catch(handleError);
 
 }
 
