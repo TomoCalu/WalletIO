@@ -10,7 +10,8 @@
     </div>
 
     <!-- Content Row -->
-    <div class="row">
+    <div class="row">      
+      <h2 class="h5 mb-0 text-gray-800" v-if="checkIfAnyAccountsExist() && accountsFetched">Start by adding a new account in the top right corner. </h2>
       <!-- Earnings (Monthly) Card Example -->
       <div class="col-xl-3 col-md-6 mb-4" v-for="(account, index) in accounts" v-bind:key="account.id">
         <div class="card border-left-success shadow h-100 py-2" v-on:mouseover="showAccountOptions(index)" v-on:mouseleave="hideAccountOptions(index)">
@@ -28,7 +29,7 @@
                   class="text-xs font-weight-bold text-success text-uppercase mb-1">{{account.name}}</div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{account.moneyAmount}} KN</div>
               </div>
-              <div class="col-auto hover-record-options"  v-on:click="toggleSelectedAccount(account.id)">
+              <div class="col-auto hover-cursor"  v-on:click="toggleSelectedAccount(account.id)">
                 <i class="fas fa-dollar-sign fa-2x" v-bind:class="[checkIfSelected(account.id)? 'selected-account-colour' : 'text-gray-300']"></i>
               </div>
             </div>
@@ -41,7 +42,7 @@
 
     <div class="row">
       <!-- Area Chart -->
-      <div class="col-xl-8 col-lg-7">
+      <div class="col-xl-8 col-lg-7" v-if="accounts.length > 0">
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -53,7 +54,7 @@
               <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                 <div class="dropdown-header">Select range:</div>
                 <div v-for="choice in balanceDataChoices" v-bind:key="choice.id">
-                  <button class="dropdown-item hover-record-options" v-on:click="selectedBalanceDataRange = choice">{{choice}}</button>
+                  <button class="dropdown-item hover-cursor" v-on:click="selectedBalanceDataRange = choice">{{choice}}</button>
                 </div>
               </div>
             </div>
@@ -68,7 +69,7 @@
       </div>
 
       <!-- Pie Chart -->
-      <div class="col-xl-4 col-lg-5">
+      <div class="col-xl-4 col-lg-5" v-if="accounts.length > 0">
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -80,7 +81,7 @@
               <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                 <div class="dropdown-header">Select range:</div>
                 <div v-for="choice in expensesStructureDataChoices" v-bind:key="choice.id">
-                  <button class="dropdown-item hover-record-options" v-on:click="selectedExpensesStructureDataRange = choice">{{choice}}</button>
+                  <button class="dropdown-item hover-cursor" v-on:click="selectedExpensesStructureDataRange = choice">{{choice}}</button>
                 </div>
               </div>
             </div>
@@ -207,6 +208,7 @@ export default {
         moneyAmount:'',
         userId: ''
       },
+      accountsFetched: false,
       submitted: false,
       accountOptions: [],
       idAccountToDelete: '',
@@ -230,11 +232,22 @@ export default {
           ],
         },
         options: {
-          cutoutPercentage: 85, 
+          maintainAspectRatio: false,
+          tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            caretPadding: 10,
+          },
           legend: {position:'bottom', 
             labels:{pointStyle:'circle',
                     usePointStyle:true}
-          }
+          },
+          cutoutPercentage: 85
         }
       },
       balanceTrendsChart : {
@@ -401,17 +414,22 @@ export default {
         if(this.selectedAccounts[i] == accountId) return true;
       }
       return false;
+    },
+    checkIfAnyAccountsExist(){
+      if(this.accounts.length == 0) return true;
+      else false;
     }
   },
   created: async function(){
     await this.getAllAccountsForUser();
+    this.accountsFetched = true;
     await this.getExpensesStructure();
     await this.getBalanceTrendsStructure();
     for (var i=0; i<this.accounts.length; i++) { 
       this.accountOptions[i] = false;
     }
     this.createChart('balanceTrendsChart', this.balanceTrendsChart);
-    this.createChart('allExpensesChart', this.allExpensesChart);    
+    this.createChart('allExpensesChart', this.allExpensesChart);
   },
   watch: {
     selectedBalanceDataRange: async function (newRange, oldRange) {

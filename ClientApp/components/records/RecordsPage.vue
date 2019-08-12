@@ -1,6 +1,6 @@
 <template>
     <!-- Begin Page Content -->
-    <div class="container-fluid">
+    <div class="container-fluid"  v-if="accounts.length > 0">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Records</h1>
@@ -35,10 +35,10 @@
                                 <td>{{record.description}}</td>
                                 <td>{{record.moneyAmount}}</td>
                                 <td class="d-flex justify-content-around">
-                                    <div class="btn btn-primary hover-record-options" v-on:click="getCurrentRecord(index)" data-toggle="modal" data-target="#editRecordModal">
+                                    <div class="btn btn-primary hover-cursor" v-on:click="getCurrentRecord(index)" data-toggle="modal" data-target="#editRecordModal">
                                         <i class="fas fa-pencil-alt" > Edit</i>
                                     </div>
-                                    <div class="btn btn-danger hover-record-options" v-on:click="idRecordToDelete = record.id" data-toggle="modal" data-target="#deleteRecordModal">
+                                    <div class="btn btn-danger hover-cursor" v-on:click="idRecordToDelete = record.id" data-toggle="modal" data-target="#deleteRecordModal">
                                         <i class="fas fa-trash-alt"> Delete</i>
                                     </div>
                                 </td>
@@ -195,6 +195,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import { entryTypeService, accountService, recordService } from '../_services';
+import { router } from '../_helpers/router'
 
 export default {
     data(){
@@ -282,9 +283,10 @@ export default {
             });
         },
         getAllAccountsForUser() {
-            accountService.getByIdUser(this.account.user.id).then(response => {            
+            var finished = accountService.getByIdUser(this.account.user.id).then(response => {            
                 this.accounts = response;
             });
+            return finished;
         },
         getAccountId(){
             for(var i=0; i<this.accounts.length; i++) {
@@ -320,12 +322,16 @@ export default {
                 } 
             }
             return false;
+        },
+        checkIfAnyAccountsExist(){
+            if(this.accounts.length == 0) router.push({ path: `/dashboard` })
         }
     },
-    created: async function(){        
+    created: async function(){
         this.getAllRecordsForUser();
         this.getEntryTypesWithCategories();
-        this.getAllAccountsForUser();
+        await this.getAllAccountsForUser();                
+        this.checkIfAnyAccountsExist();
     },
     watch: {
         selectedEntryType: function (newEntryType, oldEntryType) {

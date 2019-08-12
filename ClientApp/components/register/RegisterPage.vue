@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gradient-primary">
+  <div>
     <div class="container">
       <div class="card o-hidden border-0 shadow-lg my-5">
         <div class="card-body p-0">
@@ -55,9 +55,9 @@
                   </a>-->
                 </form>
                 <hr>
-                <div class="text-center">
+                <!--<div class="text-center">
                   <a class="small" href="forgot-password.html">Forgot Password?</a>
-                </div>
+                </div>-->
                 <div class="text-center">
                   <router-link to="/login" class="small">Already have an account? Login!</router-link>
                 </div>
