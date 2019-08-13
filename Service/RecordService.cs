@@ -26,6 +26,7 @@ namespace WalletIO.Service
         Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisWeek(int?[] selectedAccounts, EntryType incomeEntryType);
         Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisMonth(int?[] selectedAccounts, EntryType incomeEntryType);
         Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisYear(int?[] selectedAccounts, EntryType incomeEntryType);
+        KeyValuePair<int?[], decimal[]> GetSpendingAndIncomePerCategory(int?[] selectedCategories, IEnumerable<Record> records);
     }
 
     public class RecordService : IRecordService
@@ -251,6 +252,17 @@ namespace WalletIO.Service
             }
 
             return Tuple.Create(monthsOfThisYear, incomeForThisYear, spendingsForThisYear);
+        }
+
+        public KeyValuePair<int?[], decimal[]> GetSpendingAndIncomePerCategory(int?[] selectedCategories, IEnumerable<Record> records)
+        {
+            decimal[] moneyAmount = new decimal[selectedCategories.Length];
+            for (int i=0; i < selectedCategories.Length; i++)
+            {
+                moneyAmount[i] = records.Where(x => x.CategoryId == selectedCategories[i]).Sum(x => x.MoneyAmount);
+            }
+
+            return new KeyValuePair<int?[], decimal[]>(selectedCategories, moneyAmount);
         }
     }
 }

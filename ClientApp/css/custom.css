@@ -10,3 +10,7 @@
 .selected-account-colour {
     color: #1cc88a;
 }
+
+.crossed-out-text {
+    text-decoration: line-through;
+}

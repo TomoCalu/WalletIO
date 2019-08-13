@@ -32,6 +32,14 @@
           </router-link>
         </li>
 
+        <!-- Nav Item - Analytics -->
+        <li class="nav-item">
+          <router-link class="nav-link" to="/analytics">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Analytics</span>
+          </router-link>
+        </li>
+
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block" />
 

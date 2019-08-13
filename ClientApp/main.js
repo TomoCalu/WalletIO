@@ -12,6 +12,7 @@ import './css/nonito-fonts.css'
 import './css/sb-admin-2.min.css'
 //import './vendor/datatables/dataTables.bootstrap4.css'
 import './css/custom.css'
+import './css/simple-sidebar.css'
 
 /*Bootstrap core JavaScript-*/
 //import './vendor/jquery/jquery.min.js'

@@ -7,7 +7,8 @@ export const recordService = {
     update,
     delete: _delete,
     getSpendingsSums,
-    getBalanceTrends
+    getBalanceTrends,
+    getSpendingAndIncomePerCategory
 };
 
 function addNew(record) {
@@ -66,4 +67,13 @@ function getBalanceTrends(idUser, selectedRange, selectedAccounts) {
     };        
 
     return fetch(`${config.apiUrl}/records/incomeAndSpendingTrends/${idUser}/${selectedRange}?${selectedAccounts}`, requestOptions).then(handleResponse).catch(handleError);
+}
+
+function getSpendingAndIncomePerCategory(idUser, selectedCategories) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader(),
+    };
+
+    return fetch(`${config.apiUrl}/records/analytics/${idUser}?${selectedCategories}`, requestOptions).then(handleResponse).catch(handleError);
 }

@@ -193,5 +193,20 @@ namespace WalletIO.Controllers
             return BadRequest(new { message = "Wrong time range" });
 
         }
+
+        [HttpGet("analytics/{idUser}")]
+        public IActionResult GetSpendingAndIncomePerCategory(int idUser, [FromQuery]int?[] selectedCategories)
+        {
+            var accounts = _accountService.GetByIdUser(idUser).ToList();
+
+            IEnumerable<Record> records = Enumerable.Empty<Record>();
+            foreach (Account account in accounts)
+            {
+                records = records.Concat(_recordService.GetByIdAccount(account.Id));
+            }
+            
+            var spendingAndIncomePerCategory = _recordService.GetSpendingAndIncomePerCategory(selectedCategories, records);
+            return Ok(spendingAndIncomePerCategory);
+        }
     }
 }
