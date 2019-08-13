@@ -33,7 +33,11 @@
                                 <td>{{record.entryType.name}}</td>
                                 <td>{{record.category.name}}</td>
                                 <td>{{record.description}}</td>
-                                <td>{{record.moneyAmount}}</td>
+                                <td>
+                                    <p v-if="record.entryType.name == 'Income'" class="text-success">+{{record.moneyAmount}} </p>
+                                    <p v-else class="text-danger">-{{record.moneyAmount}} </p>
+                                </td>
+                                
                                 <td class="d-flex justify-content-around">
                                     <div class="btn btn-primary hover-cursor" v-on:click="getCurrentRecord(index)" data-toggle="modal" data-target="#editRecordModal">
                                         <i class="fas fa-pencil-alt" > Edit</i>
