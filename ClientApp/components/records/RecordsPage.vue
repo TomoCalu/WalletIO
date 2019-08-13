@@ -20,7 +20,6 @@
                         <thead>
                             <tr>
                                 <th>Account</th>
-                                <th>Entry type</th>
                                 <th>Category</th>
                                 <th>Description</th>
                                 <th>Money amount</th>
@@ -30,11 +29,10 @@
                         <tbody>
                             <tr v-for="(record, index) in records" v-bind:key="record.id">
                                 <td>{{record.account.name}}</td>
-                                <td>{{record.entryType.name}}</td>
                                 <td>{{record.category.name}}</td>
                                 <td>{{record.description}}</td>
                                 <td>
-                                    <p v-if="record.entryType.name == 'Income'" class="text-success">+{{record.moneyAmount}} </p>
+                                    <p v-if="checkIfCategoryIsIncome(record.category)" class="text-success">+{{record.moneyAmount}} </p>
                                     <p v-else class="text-danger">-{{record.moneyAmount}} </p>
                                 </td>
                                 
@@ -219,7 +217,8 @@ export default {
                 moneyAmount:''
             },
             submitted: false,
-            idRecordToDelete: ''
+            idRecordToDelete: '',
+            entryTypeIncomeId: ''
         }
     },
     computed: {
@@ -232,8 +231,7 @@ export default {
         getAllRecordsForUser() {
             recordService.getByIdUser(this.account.user.id).then(response => {
                 this.records = response;
-        });
-
+            });
         },
         addNewRecord() {
             this.getAccountId();
@@ -282,9 +280,10 @@ export default {
         },
         
         getEntryTypesWithCategories() {            
-            entryTypeService.getWithCategories().then(response => {            
+            var finished = entryTypeService.getWithCategories().then(response => {            
                 this.entryTypes = response;
             });
+            return finished;
         },
         getAllAccountsForUser() {
             var finished = accountService.getByIdUser(this.account.user.id).then(response => {            
@@ -329,11 +328,23 @@ export default {
         },
         checkIfAnyAccountsExist(){
             if(this.accounts.length == 0) router.push({ path: `/dashboard` })
+        },
+        getEntryTypeIncomeId () {            
+            for(var i = 0; i < this.entryTypes.length; i++)
+            {
+                if(this.entryTypes[i].name == 'Income')
+                    this.entryTypeIncomeId = this.entryTypes[i].id;
+            }
+        },
+        checkIfCategoryIsIncome (category) {
+            if (this.entryTypeIncomeId == category.entryTypeId) return true;
+            else return false;
         }
     },
     created: async function(){
         this.getAllRecordsForUser();
-        this.getEntryTypesWithCategories();
+        await this.getEntryTypesWithCategories();
+        this.getEntryTypeIncomeId();
         await this.getAllAccountsForUser();                
         this.checkIfAnyAccountsExist();
     },

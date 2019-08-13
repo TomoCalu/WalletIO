@@ -15,7 +15,6 @@ namespace WalletIO.Entities
         public int CategoryId { get; set; }
         public string CreatedTimestamp { get; set; }
         public virtual Account Account { get; set; }
-        public virtual EntryType EntryType { get; set; }
         public virtual Category Category { get; set; }
 
     }

@@ -36,7 +36,7 @@ import App from './App';
 import { router } from './components/_helpers';
 import { store } from './components/_store';
 
-//Vue.use(Vuetify)
+Vue.config.devtools = true;
 Vue.use(VeeValidate);
 
 /*import { configureFakeBackend } from './components/_helpers';

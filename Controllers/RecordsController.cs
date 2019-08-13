@@ -39,10 +39,10 @@ namespace WalletIO.Controllers
             {
                 records = records.Concat(_recordService.GetByIdAccount(account.Id));
             }
+
             foreach(Record record in records)
             {
                 record.Category = _categoryService.GetById(record.CategoryId);
-                record.EntryType = _entryTypeService.GetById(record.Category.EntryTypeId);
                 record.Account = _accountService.GetById(record.AccountId);
             }
             return Ok(records.OrderByDescending(x => x.CreatedTimestamp));
