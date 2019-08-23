@@ -3,7 +3,7 @@
     <!-- Page Wrapper -->
     <div id="wrapper" v-bind:class="{'sidebar-toggled': isSidebarToggled}">
       <!-- Sidebar -->
-      <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" v-if="account.status.loggedIn == true" 
+      <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" v-if="userInfo.status.loggedIn == true" 
         v-bind:class="{toggled: isSidebarToggled}" id="accordionSidebar">
         <!-- Sidebar - Brand -->
         <router-link class="sidebar-brand d-flex align-items-center justify-content-center" to="/dashboard">
@@ -51,7 +51,7 @@
       <!-- End of Sidebar -->
 
       <!-- Content Wrapper -->
-      <div id="content-wrapper" class="d-flex flex-column" v-if="account.status.loggedIn == true">
+      <div id="content-wrapper" class="d-flex flex-column" v-if="userInfo.status.loggedIn == true">
         <!-- Main Content -->
         <div id="content">
           <!-- Topbar -->
@@ -68,7 +68,7 @@
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
                   <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                    {{account.user.firstName}} {{account.user.lastName}}
+                    {{userInfo.user.firstName}} {{userInfo.user.lastName}}
                   </span>
                   <img class="img-profile rounded-circle" src="https://uemwi2gfx64176wmkmj29ejj-wpengine.netdna-ssl.com/wp-content/uploads/2018/01/blank-person-male-300x200.png"/>
                 </a>
@@ -130,7 +130,7 @@
         </div>
       </div>
     </div>
-    <div v-if="!account.status.loggedIn">
+    <div v-if="!userInfo.status.loggedIn">
       <Alert v-if="alert.message" :class="`alert ${alert.type}`" />
       <router-view></router-view>
     </div>
@@ -151,7 +151,7 @@ export default {
   computed: {
     ...mapState({
       alert: state => state.alert,
-      account: state => state.account
+      userInfo: state => state.userInfo
     })
   },
   methods: {

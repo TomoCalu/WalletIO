@@ -75,7 +75,7 @@ const mutations = {
     }
 };
 
-export const account = {
+export const userInfo = {
     namespaced: true,
     state,
     actions,

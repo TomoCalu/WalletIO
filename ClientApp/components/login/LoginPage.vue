@@ -58,14 +58,14 @@ export default {
     };
   },
   computed: {
-    ...mapState("account", ["status"])
+    ...mapState("userInfo", ["status"])
   },
   created() {
     // reset login status
     this.logout();
   },
   methods: {
-    ...mapActions("account", ["login", "logout"]),
+    ...mapActions("userInfo", ["login", "logout"]),
     handleSubmit(e) {
       this.submitted = true;
       const { username, password } = this;

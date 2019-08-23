@@ -80,10 +80,10 @@ export default {
         }
     },
     computed: {
-        ...mapState('account', ['status'])
+        ...mapState('userInfo', ['status'])
     },
     methods: {
-        ...mapActions('account', ['register']),
+        ...mapActions('userInfo', ['register']),
         handleSubmit(e) {
             this.submitted = true;
             this.$validator.validate().then(valid => {

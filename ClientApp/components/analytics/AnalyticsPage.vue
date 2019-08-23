@@ -80,7 +80,7 @@ export default {
     computed: {
         ...mapState({
             alert: state => state.alert,
-            account: state => state.account
+            userInfo: state => state.userInfo
         })
     },
     methods: {
@@ -91,7 +91,7 @@ export default {
             return finished;
         },
         getAllAccountsForUser() {
-            var finished = accountService.getByIdUser(this.account.user.id).then(response => {            
+            var finished = accountService.getByIdUser(this.userInfo.user.id).then(response => {            
                 this.accounts = response;
             });
             return finished;
@@ -114,13 +114,13 @@ export default {
                     this.selectedCategoriesString = this.selectedCategoriesString.concat('selectedCategories=',selectedCategory,'&');
                 });
                 this.selectedCategoriesString  = this.selectedCategoriesString.substring(0, this.selectedCategoriesString.length - 1);
-                await recordService.getSpendingAndIncomePerCategory(this.account.user.id, this.selectedCategoriesString).then(response => {
+                await recordService.getSpendingAndIncomePerCategory(this.userInfo.user.id, this.selectedCategoriesString).then(response => {
                     this.dataPerCategory = response;
                 });
                 this.selectedCategoriesString='';
             }
             else {        
-                await recordService.getSpendingAndIncomePerCategory(this.account.user.id, null).then(response => {
+                await recordService.getSpendingAndIncomePerCategory(this.userInfo.user.id, null).then(response => {
                     this.dataPerCategory = response;
                 });
             }

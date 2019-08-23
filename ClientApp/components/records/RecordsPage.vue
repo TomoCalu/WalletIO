@@ -224,12 +224,12 @@ export default {
     computed: {
         ...mapState({
             alert: state => state.alert,
-            account: state => state.account
+            userInfo: state => state.userInfo
         })
     },
     methods: {        
         getAllRecordsForUser() {
-            recordService.getByIdUser(this.account.user.id).then(response => {
+            recordService.getByIdUser(this.userInfo.user.id).then(response => {
                 this.records = response;
             });
         },
@@ -286,7 +286,7 @@ export default {
             return finished;
         },
         getAllAccountsForUser() {
-            var finished = accountService.getByIdUser(this.account.user.id).then(response => {            
+            var finished = accountService.getByIdUser(this.userInfo.user.id).then(response => {            
                 this.accounts = response;
             });
             return finished;

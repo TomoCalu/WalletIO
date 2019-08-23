@@ -283,23 +283,23 @@ export default {
   computed: {
     ...mapState({
       alert: state => state.alert,
-      account: state => state.account
+      userInfo: state => state.userInfo
     })
   },
   methods: {
     getAllAccountsForUser() {
-      var finished = accountService.getByIdUser(this.account.user.id).then(response => {            
+      var finished = accountService.getByIdUser(this.userInfo.user.id).then(response => {            
         this.accounts = response;
       });
       return finished;
     },
     addNewAccount() {
-      this.newAccount.userId = this.account.user.id;
+      this.newAccount.userId = this.userInfo.user.id;
       var finished = accountService.addNew(this.newAccount);
       return finished;
     },
     updateAccount() {
-      this.newAccount.userId = this.account.user.id;
+      this.newAccount.userId = this.userInfo.user.id;
       accountService.update(this.newAccount);
     },
     deleteAccount() {
@@ -312,13 +312,13 @@ export default {
           this.selectedAccountsString = this.selectedAccountsString.concat('selectedAccounts=',selectedAccount,'&');
         });
         this.selectedAccountsString  = this.selectedAccountsString.substring(0, this.selectedAccountsString.length - 1);
-        await recordService.getSpendingsSums(this.account.user.id, this.selectedExpensesStructureDataRange, this.selectedAccountsString).then(response => {
+        await recordService.getSpendingsSums(this.userInfo.user.id, this.selectedExpensesStructureDataRange, this.selectedAccountsString).then(response => {
           this.expensesStructureData = response;
         });
         this.selectedAccountsString='';        
       }
       else {        
-        await recordService.getSpendingsSums(this.account.user.id, this.selectedExpensesStructureDataRange, null).then(response => {
+        await recordService.getSpendingsSums(this.userInfo.user.id, this.selectedExpensesStructureDataRange, null).then(response => {
           this.expensesStructureData = response;
         });
       }
@@ -331,13 +331,13 @@ export default {
           this.selectedAccountsString = this.selectedAccountsString.concat('selectedAccounts=',selectedAccount,'&');
         });
         this.selectedAccountsString  = this.selectedAccountsString.substring(0, this.selectedAccountsString.length - 1);
-        await recordService.getBalanceTrends(this.account.user.id, this.selectedBalanceDataRange, this.selectedAccountsString).then(response => {
+        await recordService.getBalanceTrends(this.userInfo.user.id, this.selectedBalanceDataRange, this.selectedAccountsString).then(response => {
           this.balanceTrendsData = response;
         });
         this.selectedAccountsString='';
       }
       else {        
-        await recordService.getBalanceTrends(this.account.user.id, this.selectedBalanceDataRange, null).then(response => {
+        await recordService.getBalanceTrends(this.userInfo.user.id, this.selectedBalanceDataRange, null).then(response => {
           this.balanceTrendsData = response;
         });
       }
