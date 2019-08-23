@@ -189,8 +189,8 @@ export default {
         getMoneyAmountSumTotal() {
             this.totalSum = 0;
             for(var i=0; i<this.entryTypes.length; i++){
-                if(this.entryTypes[i].name == 'Income') this.totalSum = this.totalSum - this.entryTypes[i].moneyAmount;
-                else this.totalSum = this.totalSum + this.entryTypes[i].moneyAmount;
+                if(this.entryTypes[i].name == 'Income') this.totalSum = this.totalSum + this.entryTypes[i].moneyAmount;
+                else this.totalSum = this.totalSum - this.entryTypes[i].moneyAmount;
             }
         }
     },
