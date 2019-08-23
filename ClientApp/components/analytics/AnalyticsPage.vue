@@ -6,6 +6,7 @@
             <h1 class="h3 mb-0 text-gray-800">Analytics - Total sum: {{totalSum}} kn</h1>
         </div>
 
+        <!-- Analytics income table-->
         <table class="table table-borderless table-condensed table-hover">
             <thead class="font-weight-bold text-dark bg-light">
                 <tr>
@@ -29,6 +30,7 @@
             </tbody>
         </table>
 
+        <!-- Analytics spendings table-->
         <table class="table table-borderless table-condensed table-hover">
             <thead class="font-weight-bold text-dark bg-light">
                 <tr>

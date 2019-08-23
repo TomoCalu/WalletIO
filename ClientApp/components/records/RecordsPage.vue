@@ -9,7 +9,7 @@
             </a>
         </div>
 
-        <!-- DataTales Example -->
+        <!-- DataTable containing records -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Records table</h6>

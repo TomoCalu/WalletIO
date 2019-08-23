@@ -12,7 +12,7 @@
     <!-- Content Row -->
     <div class="row">      
       <h2 class="h5 mb-0 text-gray-800" v-if="checkIfAnyAccountsExist() && accountsFetched">Start by adding a new account in the top right corner. </h2>
-      <!-- Earnings (Monthly) Card Example -->
+      <!-- Account tabs -->
       <div class="col-xl-3 col-md-6 mb-4" v-for="(account, index) in accounts" v-bind:key="account.id">
         <div class="card border-left-success shadow h-100 py-2" v-on:mouseover="showAccountOptions(index)" v-on:mouseleave="hideAccountOptions(index)">
           <div class="card-body">
