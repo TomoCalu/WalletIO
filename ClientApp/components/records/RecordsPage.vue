@@ -91,8 +91,8 @@
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <label for="name">Description</label>
-                                        <input type="text" v-model="newRecord.description" v-validate="'required'" name="name" class="form-control" :class="{ 'is-invalid': submitted && errors.has('name') }" />
-                                        <div v-if="submitted && errors.has('name')" class="invalid-feedback">{{ errors.first('name') }}</div>
+                                        <input type="text" v-model="newRecord.description" v-validate="'required'" name="description" class="form-control" :class="{ 'is-invalid': submitted && errors.has('description') }" />
+                                        <div v-if="submitted && errors.has('description')" class="invalid-feedback">{{ errors.first('description') }}</div>
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <label for="moneyAmount">Value (KN)</label>
@@ -151,8 +151,8 @@
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <label for="name">Description</label>
-                                        <input type="text" v-model="newRecord.description" v-validate="'required'" name="name" class="form-control" :class="{ 'is-invalid': submitted && errors.has('name') }" />
-                                        <div v-if="submitted && errors.has('name')" class="invalid-feedback">{{ errors.first('name') }}</div>
+                                        <input type="text" v-model="newRecord.description" v-validate="'required'" name="description" class="form-control" :class="{ 'is-invalid': submitted && errors.has('description') }" />
+                                        <div v-if="submitted && errors.has('description')" class="invalid-feedback">{{ errors.first('description') }}</div>
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <label for="moneyAmount">Value (KN)</label>
@@ -255,7 +255,7 @@ export default {
                 if (valid) {
                     e.preventDefault();
                     if(this.checkIfRecordExists() == true) {
-                        await this.updateRecord();  
+                        await this.updateRecord();
                     }
                     else {
                         await this.addNewRecord();
