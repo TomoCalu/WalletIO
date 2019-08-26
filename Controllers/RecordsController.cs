@@ -203,9 +203,9 @@ namespace WalletIO.Controllers
             foreach (Account account in accounts)
             {
                 records = records.Concat(_recordService.GetByIdAccount(account.Id));
-            }
-            
+            }            
             var spendingAndIncomePerCategory = _recordService.GetSpendingAndIncomePerCategory(selectedCategories, records);
+
             return Ok(spendingAndIncomePerCategory);
         }
     }

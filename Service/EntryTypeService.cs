@@ -41,6 +41,7 @@ namespace WalletIO.Service
         public bool CheckIfIncome(int idEntryType)
         {
             var entryType = _context.EntryTypes.Find(idEntryType);
+
             if (entryType.Name == "Income") return true;
             else return false;
         }

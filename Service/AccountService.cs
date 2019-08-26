@@ -53,7 +53,7 @@ namespace WalletIO.Service
             var newAccount = _context.Accounts.Find(account.Id);
 
             if (newAccount == null)
-                throw new AppException("Account not found");
+                throw new AppException("Account not found in database");
 
             newAccount.MoneyAmount = account.MoneyAmount;
             newAccount.Name = account.Name;
