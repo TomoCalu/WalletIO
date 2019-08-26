@@ -31,7 +31,7 @@ namespace WalletIO.Controllers
         }
 
         [HttpGet("{idUser}")]
-        public IActionResult GetByIdUserWithAccountEntryAndCategory(int idUser)
+        public IActionResult GetByIdUserWithAccountAndCategory(int idUser)
         {
             var accounts = _accountService.GetByIdUser(idUser);
             IEnumerable<Record> records = Enumerable.Empty<Record>();
