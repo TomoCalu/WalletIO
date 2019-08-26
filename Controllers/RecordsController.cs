@@ -159,7 +159,7 @@ namespace WalletIO.Controllers
         }
 
         [HttpGet("incomeAndSpendingTrends/{idUser}/{selectedRange}")]
-        public IActionResult GetIncomeTrends(int idUser, string selectedRange, [FromQuery]int?[] selectedAccounts)
+        public IActionResult GetIncomeAndSendingsTrends(int idUser, string selectedRange, [FromQuery]int?[] selectedAccounts)
         {
             if (selectedAccounts.Length == 0)
             {
