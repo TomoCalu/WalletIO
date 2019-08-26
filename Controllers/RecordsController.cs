@@ -119,8 +119,8 @@ namespace WalletIO.Controllers
             return Ok();
         }
 
-        [HttpGet("recordDataSum/{idUser}/{selectedRange}")]
-        public IActionResult GetRecordDatSum(int idUser, string selectedRange, [FromQuery]int?[] selectedAccounts)
+        [HttpGet("spendingSums/{idUser}/{selectedRange}")]
+        public IActionResult GetSpendingSums(int idUser, string selectedRange, [FromQuery]int?[] selectedAccounts)
         {
             if (selectedAccounts.Length == 0)
             {

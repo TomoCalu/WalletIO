@@ -56,7 +56,7 @@ function getSpendingsSums(idUser, selectedRange, selectedAccounts) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/records/recordDataSum/${idUser}/${selectedRange}?${selectedAccounts}`, requestOptions).then(handleResponse).catch(handleError);
+    return fetch(`${config.apiUrl}/records/spendingSums/${idUser}/${selectedRange}?${selectedAccounts}`, requestOptions).then(handleResponse).catch(handleError);
 
 }
 
