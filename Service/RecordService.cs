@@ -19,10 +19,10 @@ namespace WalletIO.Service
         void AddNew(Record record);
         void Update(Record record);
         void Delete(int idRecord);
-        KeyValuePair<string[], decimal[]> GetRecordsDataSum(int?[] selectedAccounts, IEnumerable<EntryType> entryTypesWithCategories);
-        KeyValuePair<string[], decimal[]> GetRecordsDataSumForLastWeek(int?[] selectedAccounts, IEnumerable<EntryType> entryTypesWithCategories);
-        KeyValuePair<string[], decimal[]> GetRecordsDataSumForLastMonth(int?[] selectedAccounts, IEnumerable<EntryType> entryTypesWithCategories);
-        KeyValuePair<string[], decimal[]> GetRecordsDataSumForLastYear(int?[] selectedAccounts, IEnumerable<EntryType> entryTypesWithCategories);
+        KeyValuePair<string[], decimal[]> GetSpendingSum(int?[] selectedAccounts, IEnumerable<EntryType> entryTypesWithCategories);
+        KeyValuePair<string[], decimal[]> GetSpendingSumForLastWeek(int?[] selectedAccounts, IEnumerable<EntryType> entryTypesWithCategories);
+        KeyValuePair<string[], decimal[]> GetSpendingSumForLastMonth(int?[] selectedAccounts, IEnumerable<EntryType> entryTypesWithCategories);
+        KeyValuePair<string[], decimal[]> GetSpendingSumForLastYear(int?[] selectedAccounts, IEnumerable<EntryType> entryTypesWithCategories);
         Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisWeek(int?[] selectedAccounts, EntryType incomeEntryType);
         Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisMonth(int?[] selectedAccounts, EntryType incomeEntryType);
         Tuple<string[], decimal[], decimal[]> GetBalanceChangeForThisYear(int?[] selectedAccounts, EntryType incomeEntryType);
@@ -87,7 +87,7 @@ namespace WalletIO.Service
             }
         }
 
-        public KeyValuePair<string[], decimal[]> GetRecordsDataSum(int?[] selectedAccounts, IEnumerable<EntryType> entryTypesWithCategories)
+        public KeyValuePair<string[], decimal[]> GetSpendingSum(int?[] selectedAccounts, IEnumerable<EntryType> entryTypesWithCategories)
         {
 
             IEnumerable<EntryType> entryTypesWithCategoriesNoIncome = entryTypesWithCategories.Where(x => x.Name != "Income");
@@ -106,7 +106,7 @@ namespace WalletIO.Service
             return new KeyValuePair<string[], decimal[]>(dataSumLabels, dataSumData);
         }
 
-        public KeyValuePair<string[], decimal[]> GetRecordsDataSumForLastWeek(int?[] selectedAccounts, IEnumerable<EntryType> entryTypesWithCategories)
+        public KeyValuePair<string[], decimal[]> GetSpendingSumForLastWeek(int?[] selectedAccounts, IEnumerable<EntryType> entryTypesWithCategories)
         {
             IEnumerable<EntryType> entryTypesWithCategoriesNoIncome = entryTypesWithCategories.Where(x => x.Name != "Income");
             var arraySize = entryTypesWithCategoriesNoIncome.Count();
@@ -128,7 +128,7 @@ namespace WalletIO.Service
             return new KeyValuePair<string[], decimal[]>(dataSumLabels, dataSumData);
         }
 
-        public KeyValuePair<string[], decimal[]> GetRecordsDataSumForLastMonth(int?[] selectedAccounts, IEnumerable<EntryType> entryTypesWithCategories)
+        public KeyValuePair<string[], decimal[]> GetSpendingSumForLastMonth(int?[] selectedAccounts, IEnumerable<EntryType> entryTypesWithCategories)
         {
             IEnumerable<EntryType> entryTypesWithCategoriesNoIncome = entryTypesWithCategories.Where(x => x.Name != "Income");
             var arraySize = entryTypesWithCategoriesNoIncome.Count();
@@ -150,7 +150,7 @@ namespace WalletIO.Service
             return new KeyValuePair<string[], decimal[]>(dataSumLabels, dataSumData);
         }
 
-        public KeyValuePair<string[], decimal[]> GetRecordsDataSumForLastYear(int?[] selectedAccounts, IEnumerable<EntryType> entryTypesWithCategories)
+        public KeyValuePair<string[], decimal[]> GetSpendingSumForLastYear(int?[] selectedAccounts, IEnumerable<EntryType> entryTypesWithCategories)
         {
             IEnumerable<EntryType> entryTypesWithCategoriesNoIncome = entryTypesWithCategories.Where(x => x.Name != "Income");
             var arraySize = entryTypesWithCategoriesNoIncome.Count();

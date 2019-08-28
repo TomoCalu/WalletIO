@@ -55,7 +55,7 @@ namespace WalletIO.Controllers
             {
                 // save 
                 _recordService.AddNew(record);
-                int entryTypeId = _categoryService.GetEntryTypeIdFromCategoryId(record.CategoryId);
+                int entryTypeId = _categoryService.GetById(record.CategoryId).EntryTypeId;
                 bool isIncome = _entryTypeService.CheckIfIncome(entryTypeId);
                 _accountService.ChangeAccountMoneyAmount(record.AccountId, record.MoneyAmount, isIncome);
 
@@ -77,9 +77,9 @@ namespace WalletIO.Controllers
             try
             {
                 Record oldRecord = _recordService.GetById(idRecord);
-                int oldEntryTypeId = _categoryService.GetEntryTypeIdFromCategoryId(oldRecord.CategoryId);
+                int oldEntryTypeId = _categoryService.GetById(oldRecord.CategoryId).EntryTypeId;
                 bool oldIsIncome = _entryTypeService.CheckIfIncome(oldEntryTypeId);
-                int entryTypeId = _categoryService.GetEntryTypeIdFromCategoryId(record.CategoryId);
+                int entryTypeId = _categoryService.GetById(record.CategoryId).EntryTypeId;
                 bool isIncome = _entryTypeService.CheckIfIncome(entryTypeId);
 
                 if (oldIsIncome != isIncome)
@@ -108,7 +108,7 @@ namespace WalletIO.Controllers
         public IActionResult Delete(int idRecord)
         {
             Record record = _recordService.GetById(idRecord);
-            int entryTypeId = _categoryService.GetEntryTypeIdFromCategoryId(record.CategoryId);
+            int entryTypeId = _categoryService.GetById(record.CategoryId).EntryTypeId;
             bool isIncome = _entryTypeService.CheckIfIncome(entryTypeId);
 
             record.MoneyAmount = record.MoneyAmount * -1;
@@ -136,22 +136,22 @@ namespace WalletIO.Controllers
             var entryTypes = _entryTypeService.GetWithCategories();
             if (selectedRange == "All")
             {
-                var recordsDataSum = _recordService.GetRecordsDataSum(selectedAccounts, entryTypes);
+                var recordsDataSum = _recordService.GetSpendingSum(selectedAccounts, entryTypes);
                 return Ok(recordsDataSum);
             }
             else if (selectedRange == "Last 7 days")
             {
-                var recordsDataSum = _recordService.GetRecordsDataSumForLastWeek(selectedAccounts, entryTypes);
+                var recordsDataSum = _recordService.GetSpendingSumForLastWeek(selectedAccounts, entryTypes);
                 return Ok(recordsDataSum);
             }
             else if (selectedRange == "Last 30 days")
             {
-                var recordsDataSum = _recordService.GetRecordsDataSumForLastMonth(selectedAccounts, entryTypes);
+                var recordsDataSum = _recordService.GetSpendingSumForLastMonth(selectedAccounts, entryTypes);
                 return Ok(recordsDataSum);
             }
             else if (selectedRange == "Last year")
             {
-                var recordsDataSum = _recordService.GetRecordsDataSumForLastYear(selectedAccounts, entryTypes);
+                var recordsDataSum = _recordService.GetSpendingSumForLastYear(selectedAccounts, entryTypes);
                 return Ok(recordsDataSum);
             }
 
