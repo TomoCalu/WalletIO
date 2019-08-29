@@ -42,7 +42,7 @@ namespace WalletIO.Service
 
         public void AddNew(Account account)
         {
-            account.CreatedTimestamp = DateTime.Now.ToString();
+            account.CreatedTimestamp = DateTime.Now.ToString("dd-MM-yy HH:mm:ss");
 
             _context.Accounts.Add(account);
             _context.SaveChanges();

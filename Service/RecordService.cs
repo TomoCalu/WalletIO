@@ -55,7 +55,7 @@ namespace WalletIO.Service
 
         public void AddNew(Record record)
         {
-            record.CreatedTimestamp = DateTime.Now.ToString();
+            record.CreatedTimestamp = DateTime.Now.ToString("dd-MM-yy HH:mm:ss");
 
             _context.Records.Add(record);
             _context.SaveChanges();
@@ -119,8 +119,8 @@ namespace WalletIO.Service
                 EntryType entryTypeWithCategories = entryTypesWithCategoriesNoIncome.ElementAt(i);
                 dataSumData[i] = _context.Records.Where(x => entryTypeWithCategories.Categories.Any(y => y.Id == x.CategoryId) &&
                                                              selectedAccounts.Contains(x.AccountId) &&
-                                                             DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date <= date &&
-                                                             DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date > date.AddDays(-7))
+                                                             DateTime.ParseExact(x.CreatedTimestamp, "dd-MM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date <= date &&
+                                                             DateTime.ParseExact(x.CreatedTimestamp, "dd-MM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date > date.AddDays(-7))
                                                  .Sum(x => x.MoneyAmount);
                 dataSumLabels[i] = entryTypeWithCategories.Name;
             }
@@ -141,8 +141,8 @@ namespace WalletIO.Service
                 EntryType entryTypeWithCategories = entryTypesWithCategoriesNoIncome.ElementAt(i);
                 dataSumData[i] = _context.Records.Where(x => entryTypeWithCategories.Categories.Any(y => y.Id == x.CategoryId) &&
                                                              selectedAccounts.Contains(x.AccountId) &&
-                                                             DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date <= date &&
-                                                             DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date > date.AddDays(-30))
+                                                             DateTime.ParseExact(x.CreatedTimestamp, "dd-MM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date <= date &&
+                                                             DateTime.ParseExact(x.CreatedTimestamp, "dd-MM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date > date.AddDays(-30))
                                                  .Sum(x => x.MoneyAmount);
                 dataSumLabels[i] = entryTypeWithCategories.Name;
             }
@@ -163,8 +163,8 @@ namespace WalletIO.Service
                 EntryType entryTypeWithCategories = entryTypesWithCategoriesNoIncome.ElementAt(i);
                 dataSumData[i] = _context.Records.Where(x => entryTypeWithCategories.Categories.Any(y => y.Id == x.CategoryId) &&
                                                              selectedAccounts.Contains(x.AccountId) &&
-                                                             DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date <= date &&
-                                                             DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date > date.AddDays(-365))
+                                                             DateTime.ParseExact(x.CreatedTimestamp, "dd-MM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date <= date &&
+                                                             DateTime.ParseExact(x.CreatedTimestamp, "dd-MM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date > date.AddDays(-365))
                                                  .Sum(x => x.MoneyAmount);
                 dataSumLabels[i] = entryTypeWithCategories.Name;
             }
@@ -181,12 +181,12 @@ namespace WalletIO.Service
             DateTime date = DateTime.Now.Date;
             for (int i = 6; i >= 0; i--)
             {
-                incomeForThisWeek[i] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date == date) &&
+                incomeForThisWeek[i] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date == date) &&
                                                                     x.Category.EntryTypeId == incomeEntryType.Id &&
                                                                     selectedAccounts.Contains(x.AccountId))
                                                         .Sum(x => x.MoneyAmount);
 
-                spendingsForThisWeek[i] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date == date) &&
+                spendingsForThisWeek[i] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date == date) &&
                                                                        x.Category.EntryTypeId != incomeEntryType.Id &&
                                                                        selectedAccounts.Contains(x.AccountId))
                                                           .Sum(x => x.MoneyAmount);
@@ -206,14 +206,14 @@ namespace WalletIO.Service
             DateTime date = DateTime.Now.Date;
             for (int i = 35; i >= 0; i=i-7)
             {
-                incomeForThisMonth[i/7] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date <= date) &&
-                                                                   (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date > date.AddDays(-7)) &&
+                incomeForThisMonth[i/7] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date <= date) &&
+                                                                   (DateTime.ParseExact(x.CreatedTimestamp, "dd-MM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date > date.AddDays(-7)) &&
                                                                    x.Category.EntryTypeId == incomeEntryType.Id &&
                                                                    selectedAccounts.Contains(x.AccountId))
                                                         .Sum(x => x.MoneyAmount);
 
-                spendingsForThisMonth[i / 7] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date <= date) &&
-                                                                     (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date > date.AddDays(-7)) &&
+                spendingsForThisMonth[i / 7] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date <= date) &&
+                                                                     (DateTime.ParseExact(x.CreatedTimestamp, "dd-MM-yy HH:mm:ss", CultureInfo.InvariantCulture).Date > date.AddDays(-7)) &&
                                                                      x.Category.EntryTypeId != incomeEntryType.Id &&
                                                                      selectedAccounts.Contains(x.AccountId))
                                                         .Sum(x => x.MoneyAmount);
@@ -231,17 +231,17 @@ namespace WalletIO.Service
             decimal[] spendingsForThisYear = new decimal[12];
 
             DateTime currentDate = DateTime.Now.Date;
-            string month = currentDate.ToString("MMMM yyyy");
+            string month = currentDate.ToString("MMM yyyy");
             for (int i = 11; i >= 0; i--)
             {
-                incomeForThisYear[i] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Month == currentDate.Month) &&
-                                                                   (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Year == currentDate.Year) &&
+                incomeForThisYear[i] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MM-yy HH:mm:ss", CultureInfo.InvariantCulture).Month == currentDate.Month) &&
+                                                                   (DateTime.ParseExact(x.CreatedTimestamp, "dd-MM-yy HH:mm:ss", CultureInfo.InvariantCulture).Year == currentDate.Year) &&
                                                                    x.Category.EntryTypeId == incomeEntryType.Id &&
                                                                    selectedAccounts.Contains(x.AccountId))
                                                        .Sum(x => x.MoneyAmount);
 
-                spendingsForThisYear[i] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Month == currentDate.Month) &&
-                                                                      (DateTime.ParseExact(x.CreatedTimestamp, "dd-MMM-yy HH:mm:ss", CultureInfo.InvariantCulture).Year == currentDate.Year) &&
+                spendingsForThisYear[i] = _context.Records.Where(x => (DateTime.ParseExact(x.CreatedTimestamp, "dd-MM-yy HH:mm:ss", CultureInfo.InvariantCulture).Month == currentDate.Month) &&
+                                                                      (DateTime.ParseExact(x.CreatedTimestamp, "dd-MM-yy HH:mm:ss", CultureInfo.InvariantCulture).Year == currentDate.Year) &&
                                                                       x.Category.EntryTypeId != incomeEntryType.Id &&
                                                                       selectedAccounts.Contains(x.AccountId))
                                                           .Sum(x => x.MoneyAmount);

@@ -17,7 +17,7 @@
                     <form class="user" @submit.prevent="handleSubmit">
                       <div class="form-group">
                         <label for="username">Username</label>
-                        <input type="text" v-model="username" name="username" class="form-control" :class="{ 'is-invalid': submitted && !username }"/>
+                        <input type="text" v-model="username" name="username" class="form-control" :class="{ 'is-invalid': submitted && !username }" v-focus/>
                         <div v-show="submitted && !username" class="invalid-feedback">Username is required</div>
                       </div>
                       <div class="form-group">
@@ -73,6 +73,14 @@ export default {
         this.login({ username, password });
       }
     }
+  },
+  directives: {
+  focus: {
+    // directive definition
+    inserted: function (el) {
+      el.focus()
+    }
   }
+}
 };
 </script>
