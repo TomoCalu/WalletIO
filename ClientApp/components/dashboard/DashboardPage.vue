@@ -4,7 +4,7 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
       <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-      <a href="#" class="d-none d-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#newAccountModal" v-if="accounts.length < 8">
+      <a href="#" class="d-none d-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#newAccountModal" v-if="accounts.length < 8" v-on:click="clearNewAccountData()">
         <i class="fas fa-plus fa-sm text-white-50"></i> Add new cash or bank account
       </a>
     </div>
@@ -418,6 +418,17 @@ export default {
     checkIfAnyAccountsExist(){
       if(this.accounts.length == 0) return true;
       else false;
+    },
+    clearNewAccountData() {
+      this.newAccount.name = "";
+      this.newAccount.moneyAmount = "";
+      delete this.newAccount.id;
+      delete this.newAccount.createdTimestamp;
+      delete this.newAccount.records;
+      this.selectedAccount = "";
+      this.selectedEntryType = "";
+      this.selectedCategory = "";
+      this.$validator.reset();
     }
   },
   created: async function(){
