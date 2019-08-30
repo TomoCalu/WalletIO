@@ -190,7 +190,7 @@ namespace WalletIO.Service
                                                                        x.Category.EntryTypeId != incomeEntryType.Id &&
                                                                        selectedAccounts.Contains(x.AccountId))
                                                           .Sum(x => x.MoneyAmount);
-                daysOfThisWeek[i] = date.ToString("MM/dd/yyyy");
+                daysOfThisWeek[i] = date.ToString("dd-MM-yyyy");
                 date = date.AddDays(-1);
             }
 
@@ -218,7 +218,7 @@ namespace WalletIO.Service
                                                                      selectedAccounts.Contains(x.AccountId))
                                                         .Sum(x => x.MoneyAmount);
 
-                weeksOfThisMonth[i/7] = date.ToString("MM/dd/yyyy");
+                weeksOfThisMonth[i/7] = date.ToString("dd-MM-yyyy");
                 date = date.AddDays(-7);
             }
 
