@@ -204,6 +204,7 @@ export default {
         return {
             pageNumber: 0,  // default to page 0,
             records: [],
+            unsortedRecords: [],
             accounts: [],
             entryTypes: [],
             categories: [],
@@ -230,7 +231,7 @@ export default {
     methods: {        
         getAllRecordsForUser() {
             var finished = recordService.getByIdUser(this.userInfo.user.id).then(response => {
-                this.records = response;
+                this.unsortedRecords = response;
             });
             return finished;
         },
@@ -361,11 +362,16 @@ export default {
             this.selectedEntryType = "";
             this.selectedCategory = "";
             this.$validator.reset();
+        },
+        sortRecords() {
+            this.records = this.unsortedRecords.slice(0).sort(function(a, b) {
+                return b.id - a.id 
+            });
         }
     },
     created: async function(){
         await this.getAllRecordsForUser();
-        this.records.sort(function(a,b){return a.createdTimestamp - b.createdTimestamp});
+        this.sortRecords();
         await this.getEntryTypesWithCategories();
         this.getEntryTypeIncomeId();
         await this.getAllAccountsForUser();                
