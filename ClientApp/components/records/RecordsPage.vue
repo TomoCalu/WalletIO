@@ -96,7 +96,7 @@
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <label for="moneyAmount">Value (KN)</label>
-                                        <input type="number" v-model="newRecord.moneyAmount" v-validate="{required, regex: /^[1-9]\d*$/}" name="moneyAmount" class="form-control" :class="{ 'is-invalid': submitted && errors.has('moneyAmount') }" />
+                                        <input type="number" v-model="newRecord.moneyAmount" v-validate="'{required, regex: /^[1-9]\d*$/}'" name="moneyAmount" class="form-control" :class="{ 'is-invalid': submitted && errors.has('moneyAmount') }" />
                                         <div v-if="submitted && errors.has('moneyAmount')" class="invalid-feedback">{{ errors.first('moneyAmount') }}</div>
                                     </div>
                                 </div>
@@ -156,7 +156,7 @@
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <label for="moneyAmount">Value (KN)</label>
-                                        <input type="number" v-model="newRecord.moneyAmount" v-validate="'required'" name="moneyAmount" class="form-control" :class="{ 'is-invalid': submitted && errors.has('moneyAmount') }" />
+                                        <input type="number" v-model="newRecord.moneyAmount" v-validate="'{required, regex: /^[1-9]\d*$/}'" name="moneyAmount" class="form-control" :class="{ 'is-invalid': submitted && errors.has('moneyAmount') }" />
                                         <div v-if="submitted && errors.has('moneyAmount')" class="invalid-feedback">{{ errors.first('moneyAmount') }}</div>
                                     </div>
                                 </div>
@@ -229,9 +229,10 @@ export default {
     },
     methods: {        
         getAllRecordsForUser() {
-            recordService.getByIdUser(this.userInfo.user.id).then(response => {
+            var finished = recordService.getByIdUser(this.userInfo.user.id).then(response => {
                 this.records = response;
             });
+            return finished;
         },
         addNewRecord() {
             this.getAccountId();
@@ -363,7 +364,8 @@ export default {
         }
     },
     created: async function(){
-        this.getAllRecordsForUser();
+        await this.getAllRecordsForUser();
+        this.records.sort(function(a,b){return a.createdTimestamp - b.createdTimestamp});
         await this.getEntryTypesWithCategories();
         this.getEntryTypeIncomeId();
         await this.getAllAccountsForUser();                

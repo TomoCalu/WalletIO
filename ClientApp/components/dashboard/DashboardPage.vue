@@ -120,7 +120,7 @@
                   </div>
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <label for="moneyAmount">Starting money amount (KN)</label>
-                    <input type="number" v-model="newAccount.moneyAmount" v-validate="'required'" name="moneyAmount" class="form-control" :class="{ 'is-invalid': submitted && errors.has('moneyAmount') }" />
+                    <input type="number" v-model="newAccount.moneyAmount" v-validate="'{required, regex: /^[1-9]\d*$/}'" name="moneyAmount" class="form-control" :class="{ 'is-invalid': submitted && errors.has('moneyAmount') }" />
                     <div v-if="submitted && errors.has('moneyAmount')" class="invalid-feedback">{{ errors.first('moneyAmount') }}</div>
                   </div>
                 </div>                
@@ -157,7 +157,7 @@
                   </div>
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <label for="moneyAmount">Starting money amount (KN)</label>
-                    <input type="number" v-model="newAccount.moneyAmount" v-validate="'required'" name="moneyAmount" class="form-control" :class="{ 'is-invalid': submitted && errors.has('moneyAmount') }" />
+                    <input type="number" v-model="newAccount.moneyAmount" v-validate="'{required, regex: /^[1-9]\d*$/}'" name="moneyAmount" class="form-control" :class="{ 'is-invalid': submitted && errors.has('moneyAmount') }" />
                     <div v-if="submitted && errors.has('moneyAmount')" class="invalid-feedback">{{ errors.first('moneyAmount') }}</div>
                   </div>
                 </div>                
